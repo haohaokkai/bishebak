@@ -1,0 +1,33 @@
+@startuml 公告相关ER图
+
+' 设置样式
+skinparam backgroundColor white
+skinparam handwritten false
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam class {
+    BackgroundColor white
+    BorderColor black
+    ArrowColor black
+}
+
+' 公告相关实体
+entity "公告信息" as notice {
+    + id : Long <<PK>>
+    --
+    title : String
+    content : String
+    type : String
+    status : Integer
+    create_time : Date
+    update_time : Date
+}
+
+' 添加注释
+note right of notice
+  系统公告信息，
+  包括医院通知、
+  健康知识等
+end note
+
+@enduml 

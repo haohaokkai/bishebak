@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<title>医生详情</title>
+	<link rel="stylesheet" href="../../layui/css/layui.css">
+	<!-- 样式 -->
+	<link rel="stylesheet" href="../../css/style.css" />
+	<!-- 主题（主要颜色设置） -->
+	<link rel="stylesheet" href="../../css/theme.css" />
+	<!-- 通用的css -->
+	<link rel="stylesheet" href="../../css/common.css" />
+</head>
+<style>
+    :root {
+        --primary-color: #409EFF;
+        --secondary-color: #67C23A;
+        --background-color: #f5f7fa;
+        --text-color: #303133;
+        --border-color: #DCDFE6;
+        --hover-color: #ecf5ff;
+        --card-shadow: 0 2px 12px 0 rgba(0,0,0,0.1);
+        --card-hover-shadow: 0 4px 16px 0 rgba(0,0,0,0.2);
+    }
+
+    body {
+        background-color: var(--background-color);
+        color: var(--text-color);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        background-image: url('../../img/login-bg.jpg');
+		background-size: cover;
+        background-attachment: fixed;
+		background-position: center;
+        margin: 0;
+        padding: 0;
+    }
+
+    .modern-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .modern-breadcrumb {
+        background: rgba(255, 255, 255, 0.9);
+        padding: 15px 20px;
+        border-radius: 8px;
+        box-shadow: var(--card-shadow);
+        margin-bottom: 20px;
+        backdrop-filter: blur(10px);
+    }
+
+    .modern-breadcrumb .layui-breadcrumb {
+        visibility: visible;
+    }
+
+    .modern-breadcrumb .layui-breadcrumb a {
+        color: var(--primary-color);
+        text-decoration: none;
+    }
+
+    .modern-breadcrumb .layui-breadcrumb cite {
+        color: var(--text-color);
+    }
+
+    .modern-detail-card {
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 8px;
+        box-shadow: var(--card-shadow);
+        overflow: hidden;
+        backdrop-filter: blur(10px);
+        margin-bottom: 20px;
+    }
+
+    .modern-detail-header {
+        padding: 20px;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .modern-detail-title {
+        font-size: 24px;
+        font-weight: bold;
+        color: var(--text-color);
+        margin: 0;
+    }
+
+    .modern-detail-content {
+        padding: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 30px;
+    }
+
+    .modern-detail-image {
+        width: 100%;
+        height: 400px;
+        object-fit: contain;
+        background-color: rgba(255, 255, 255, 0.5);
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+
+    .modern-detail-info {
+        flex: 1;
+        min-width: 300px;
+    }
+
+    .modern-detail-item {
+        display: flex;
+        margin-bottom: 15px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .modern-detail-label {
+        width: 100px;
+        font-weight: bold;
+        color: var(--text-color);
+    }
+
+    .modern-detail-value {
+        flex: 1;
+        color: var(--text-color);
+    }
+
+    .modern-detail-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    .modern-btn {
+        padding: 8px 20px;
+        border-radius: 4px;
+        border: none;
+        cursor: pointer;
+        font-size: 14px;
+        transition: all 0.3s;
+    }
+
+    .modern-btn-primary {
+        background-color: var(--primary-color);
+        color: white;
+    }
+
+    .modern-btn-primary:hover {
+        background-color: #66b1ff;
+    }
+
+    .modern-btn-success {
+        background-color: var(--secondary-color);
+        color: white;
+    }
+
+    .modern-btn-success:hover {
+        background-color: #85ce61;
+    }
+
+    .modern-tab {
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 8px;
+        box-shadow: var(--card-shadow);
+        overflow: hidden;
+        backdrop-filter: blur(10px);
+    }
+
+    .modern-tab .layui-tab-title {
+        background-color: rgba(255, 255, 255, 0.8);
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .modern-tab .layui-tab-title li {
+        color: var(--text-color);
+        font-size: 16px;
+    }
+
+    .modern-tab .layui-tab-title .layui-this {
+        color: var(--primary-color);
+    }
+
+    .modern-tab .layui-tab-title .layui-this:after {
+        border-bottom-color: var(--primary-color);
+    }
+
+    .modern-tab .layui-tab-content {
+        padding: 20px;
+    }
+
+    .modern-tab .layui-tab-item {
+        color: var(--text-color);
+        line-height: 1.8;
+    }
+
+    .modern-carousel {
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: var(--card-shadow);
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto;
+        flex: 0 0 300px;
+    }
+
+    .modern-carousel .layui-carousel {
+        width: 100% !important;
+    }
+
+    .modern-carousel .layui-carousel-item {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: rgba(255, 255, 255, 0.5);
+    }
+
+    .modern-carousel .layui-carousel-item img {
+        max-width: 100%;
+        max-height: 300px;
+        object-fit: contain;
+    }
+
+    .modern-carousel .layui-carousel-ind li {
+        background-color: rgba(255, 255, 255, 0.8) !important;
+        border-radius: 50% !important;
+        width: 10px !important;
+        height: 10px !important;
+    }
+
+    .modern-carousel .layui-carousel-ind li.layui-this {
+        background-color: var(--primary-color) !important;
+    }
+
+    @media (max-width: 768px) {
+        .modern-container {
+            padding: 10px;
+        }
+
+        .modern-detail-content {
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .modern-detail-image {
+            height: 300px;
+        }
+
+        .modern-detail-actions {
+            flex-direction: column;
+        }
+
+        .modern-btn {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+    }
+</style>
+<body>
+
+	<div id="app">
+        <div class="modern-container">
+            <div class="modern-breadcrumb">
+                <span class="layui-breadcrumb">
+                    <a href="../home/home.html">首页</a>
+                    <a><cite>{{title}}</cite></a>
+                </span>
+            </div>
+
+            <div class="modern-detail-card">
+                <div class="modern-detail-header">
+                    <h1 class="modern-detail-title">{{title}}</h1>
+                </div>
+                <div class="modern-detail-content">
+                    <div class="modern-carousel">
+                        <div class="layui-carousel" id="swiper">
+                            <div carousel-item>
+                                <div v-if="swiperList.length" v-for="(item,index) in swiperList" :key="index">
+                                    <img class="modern-detail-image" :src="baseurl + '/' + item" />
+                                </div>
+                                <div v-if="!swiperList.length">
+                                    <img class="modern-detail-image" src="../../img/default-avatar.jpg" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modern-detail-info">
+                        <div class="modern-detail-item">
+                            <div class="modern-detail-label">医生账号：</div>
+                            <div class="modern-detail-value">{{detail.yishengzhanghao}}</div>
+                        </div>
+                        <div class="modern-detail-item">
+                            <div class="modern-detail-label">性别：</div>
+                            <div class="modern-detail-value">{{detail.xingbie}}</div>
+                        </div>
+                        <div class="modern-detail-item">
+                            <div class="modern-detail-label">手机号：</div>
+                            <div class="modern-detail-value">{{detail.shoujihao}}</div>
+                        </div>
+                        <div class="modern-detail-item">
+                            <div class="modern-detail-label">医生职位：</div>
+                            <div class="modern-detail-value">{{detail.yishengzhiwei}}</div>
+                        </div>
+                        <div class="modern-detail-actions">
+                            <button v-if="isAuth('yisheng','咨询')" @click="onAcrossTap('zixunxinxi','是','','')" type="button" class="modern-btn modern-btn-primary">
+                                咨询
+                            </button>
+                            <button v-if="isAuth('yisheng','预约')" @click="showReservationDialog()" type="button" class="modern-btn modern-btn-success">
+                                预约
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modern-tab">
+                <div class="layui-tab layui-tab-card">
+                    <ul class="layui-tab-title">
+                        <li class="layui-this">医生简介</li>
+					</ul>
+					<div class="layui-tab-content">
+						<div class="layui-tab-item layui-show">
+							<div v-html="detail.yishengjianjie"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- 预约选择时间对话框 -->
+	<div class="layui-layer layui-layer-page" id="reservationDialog" style="z-index: 19891015; width: 650px; height: auto; display:none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: #fff; border-radius: 8px; box-shadow: 0 4px 16px rgba(0,0,0,0.2);">
+		<div class="layui-layer-title" style="cursor: move; padding: 15px; font-size: 16px; background-color: #2a95de; color: #fff; border-radius: 8px 8px 0 0;">选择预约时间</div>
+		<div class="layui-layer-content" style="height: auto; padding: 20px 10px;">
+			<div class="layui-form" lay-filter="reservationForm" style="padding: 20px;">
+				<div class="layui-form-item">
+					<label class="layui-form-label" style="width: 100px; font-size: 15px;">日期</label>
+					<div class="layui-input-block" style="margin-left: 130px;">
+						<select id="dateSelect" lay-filter="dateSelect" lay-verify="required" style="height: 38px; font-size: 14px; border-radius: 4px; border: 1px solid #DCDFE6;">
+							<option value="">请选择日期</option>
+							<option v-for="(item, index) in availableDates" :key="index" :value="item">{{ item }}</option>
+						</select>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label" style="width: 100px; font-size: 15px;">时间段</label>
+					<div class="layui-input-block" style="margin-left: 130px;">
+						<select id="timeSlotSelect" lay-filter="timeSlotSelect" lay-verify="required" style="height: 38px; font-size: 14px; border-radius: 4px; border: 1px solid #DCDFE6;">
+							<option value="">请先选择日期</option>
+							<option v-for="(item, index) in availableTimeSlots" :key="index" :value="item.id">
+								{{ item.timeSlot }} (剩余名额: {{ item.maxPatients - item.bookedCount }})
+							</option>
+						</select>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="layui-layer-btn layui-layer-btn-" style="padding: 15px; text-align: center;">
+			<a class="layui-layer-btn0" onclick="submitReservation()" style="padding: 8px 25px; background-color: #1E9FFF; font-size: 14px; border-radius: 4px;">确定预约</a>
+			<a class="layui-layer-btn1" onclick="hideReservationDialog()" style="padding: 8px 25px; font-size: 14px; border-radius: 4px;">取消</a>
+		</div>
+		<span class="layui-layer-resize"></span>
+	</div>
+
+	<!-- 预约成功信息对话框 -->
+	<div class="layui-layer layui-layer-dialog" id="successDialog" style="z-index: 19891015; width: 360px; display:none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); border-radius: 8px; box-shadow: 0 4px 16px rgba(0,0,0,0.2);">
+		<div class="layui-layer-title" style="cursor: move; border-radius: 8px 8px 0 0;">预约成功</div>
+		<div class="layui-layer-content" style="height: auto; padding: 20px;">
+			<div class="layui-text">
+				<p><strong>医生姓名：</strong>{{ detail.yishengxingming }}</p>
+				<p><strong>医生职位：</strong>{{ detail.yishengzhiwei }}</p>
+				<p><strong>预约日期：</strong>{{ selectedDate }}</p>
+				<p><strong>预约时间：</strong>{{ selectedTimeSlot ? selectedTimeSlot.timeSlot : '' }}</p>
+				<p><strong>预约状态：</strong>待确认</p>
+				<p style="color: #ff5722;">请按时就诊，如需取消请提前联系医生。</p>
+			</div>
+		</div>
+		<div class="layui-layer-btn layui-layer-btn-">
+			<a class="layui-layer-btn0" onclick="hideSuccessDialog()" style="border-radius: 4px;">我知道了</a>
+		</div>
+	</div>
+
+	<script src="../../layui/layui.js"></script>
+	<script src="../../js/vue.js"></script>
+	<!-- 组件配置信息 -->
+	<script src="../../js/config.js"></script>
+	<!-- 扩展插件配置信息 -->
+	<script src="../../modules/config.js"></script>
+	<!-- 工具方法 -->
+	<script src="../../js/utils.js"></script>
+
+	<!-- 全局方法，用于对话框操作 -->
+	<script>
+		// 全局方法，供对话框按钮直接调用
+		function showReservationDialog() {
+			if (vue) vue.showReservationDialog();
+		}
+		
+		function hideReservationDialog() {
+			if (vue) vue.hideReservationDialog();
+		}
+		
+		function submitReservation() {
+			if (vue) vue.submitReservation();
+		}
+
+		function hideSuccessDialog() {
+			if (vue) vue.closeSuccessDialog();
+		}
+	</script>
+
+	<script>
+		var vue = null;
+		
+		// 等待页面加载完成后执行
+		layui.use(['layer', 'form', 'element', 'carousel', 'http', 'jquery', 'laypage'], function() {
+			var layer = layui.layer;
+			var element = layui.element;
+			var form = layui.form;
+			var carousel = layui.carousel;
+			var http = layui.http;
+			var jquery = layui.jquery;
+			var laypage = layui.laypage;
+
+			// 初始化Vue实例
+			vue = new Vue({
+			el: '#app',
+			data: {
+				// 轮播图
+					swiperList: [{
+						img: '../../img/banner.jpg'
+					}],
+					dataList: [],
+					// 详情信息
+				detail: {
+					id: 0
+				},
+					// 表单标题
+					ro:{
+						yishengbiaozhi: false,
+						zhaopian: false,
+						yishengxingming: false,
+						xingbie: false,
+						zhuyaozhuanchang: false,
+						yiyuanmingcheng: false,
+						zhicheng: false,
+						dengjiriqi: false,
+					},
+					// 倒计时效果
+				count: 0,
+					// 倒计时id
+					intervalId: null,
+					zan: 0,
+					// 购买数量
+				buynumber: 1,
+					// 总价格
+					totalPrice: 0,
+					// 单价
+					price: 0,
+					// 库存
+					num: 0,
+					// 评论列表
+					storeupFlag: 0,
+					title: '',
+					chatFlag: false,
+					mescontent: '',
+					messages: [],
+					messagesObj: {},
+					//下过单的用户id
+					
+					// 预约相关属性
+					availableDates: [], // 可预约日期列表
+					availableTimeSlots: [], // 某日期下的可预约时间段
+					selectedDate: null, // 已选择的日期
+					selectedScheduleId: null, // 已选择的排班ID
+					
+					// 基础URL
+					baseurl: '',
+					// 当前详情页表名
+				detailTable: 'yisheng',
+			},
+			// 倒计时效果
+			computed: {
+				SecondToDate: function() {
+					var time = this.count;
+					if (null != time && "" != time) {
+						if (time > 60 && time < 60 * 60) {
+							time =
+								parseInt(time / 60.0) +
+								"分钟" +
+								parseInt((parseFloat(time / 60.0) - parseInt(time / 60.0)) * 60) +
+								"秒";
+						} else if (time >= 60 * 60 && time < 60 * 60 * 24) {
+							time =
+								parseInt(time / 3600.0) +
+								"小时" +
+								parseInt(
+									(parseFloat(time / 3600.0) - parseInt(time / 3600.0)) * 60
+								) +
+								"分钟" +
+								parseInt(
+									(parseFloat(
+											(parseFloat(time / 3600.0) - parseInt(time / 3600.0)) * 60
+										) -
+										parseInt(
+											(parseFloat(time / 3600.0) - parseInt(time / 3600.0)) * 60
+										)) *
+									60
+								) +
+								"秒";
+						} else if (time >= 60 * 60 * 24) {
+							time =
+								parseInt(time / 3600.0 / 24) +
+								"天" +
+								parseInt(
+									(parseFloat(time / 3600.0 / 24) - parseInt(time / 3600.0 / 24)) *
+									24
+								) +
+								"小时" +
+								parseInt(
+									(parseFloat(time / 3600.0) - parseInt(time / 3600.0)) * 60
+								) +
+								"分钟" +
+								parseInt(
+									(parseFloat(
+											(parseFloat(time / 3600.0) - parseInt(time / 3600.0)) * 60
+										) -
+										parseInt(
+											(parseFloat(time / 3600.0) - parseInt(time / 3600.0)) * 60
+										)) *
+									60
+								) +
+								"秒";
+						} else {
+							time = parseInt(time) + "秒";
+						}
+					}
+					return time;
+				}
+			},
+			//  清除定时器
+			destroyed: function() {
+				window.clearInterval(this.inter);
+			},
+			methods: {
+				jump(url) {
+					jump(url)
+				},
+				isAuth(tablename, button) {
+					return isFrontAuth(tablename, button)
+				},
+				// 倒计时初始化
+				countDown() {
+					let reversetime = new Date(this.detail.reversetime).getTime()
+					let now = new Date().getTime();
+					let count = reversetime - now;
+					if (count > 0) {
+						this.count = count / 1000
+						var _this = this;
+						this.inter = window.setInterval(function() {
+							_this.count = _this.count - 1;
+							if (_this.count < 0) {
+								window.clearInterval(_this.inter);
+								layer.msg("活动已结束", {
+									time: 2000,
+									icon: 5
+								})
+							}
+						}, 1000);
+					}
+				},
+				
+				// 下载文件
+				downFile(url) {
+					var download = $("#download");
+					download.append(
+						"<a id=\"down\" href=\"aaaa.txt\" target=\"_blank\" download=\"aaaa.txt\" style=\"display:none\">下载该文件</a>");
+					console.log(download);
+					$("#down")[0].click();
+				},
+				// 跨表
+				onAcrossTap(acrossTable,crossOptAudit,statusColumnName,tips,statusColumnValue){
+					if(crossOptAudit=='是'&&this.detail.sfsh!='是') {
+						layer.msg('请审核通过后再操作', {
+							time: 2000,
+							icon: 3 
+						});
+						return
+					}
+						
+						// 如果是预约功能，直接使用弹窗而不跳转
+						if(acrossTable === 'yuyue') {
+							this.showReservationDialog();
+							return;
+						}
+						
+					localStorage.setItem('crossTable',`yisheng`);
+					localStorage.setItem('crossObj', JSON.stringify(this.detail));
+					localStorage.setItem('statusColumnName',statusColumnName);
+					localStorage.setItem('statusColumnValue',statusColumnValue);
+					localStorage.setItem('tips',tips);
+
+					if(statusColumnName!=''&&!statusColumnName.startsWith("[")) {
+						var obj = JSON.parse(localStorage.getItem('crossObj'));
+						for (var o in obj){
+							if(o==statusColumnName && obj[o]==statusColumnValue){
+								layer.msg(tips, {
+									time: 2000,
+									icon: 5
+								});
+								return
+							}
+						}
+					}
+
+					jump(`../${acrossTable}/add.html?corss=true`);
+				},
+
+					// 显示预约对话框
+					showReservationDialog() {
+						// 获取当前用户信息
+						let token = localStorage.getItem('Token');
+						if (!token) {
+							layer.msg('请先登录', { time: 2000, icon: 2 });
+							setTimeout(() => {
+								jump('../login/login.html');
+							}, 1500);
+							return;
+						}
+						
+						// 重置选择
+						this.selectedDate = null;
+						this.selectedScheduleId = null;
+						this.availableTimeSlots = [];
+						
+						// 加载可用预约日期
+						this.loadAvailableDates();
+						
+						// 重置表单
+						setTimeout(() => {
+							jquery('#dateSelect').empty();
+							jquery('#dateSelect').append('<option value="">请选择日期</option>');
+							vue.availableDates.forEach(date => {
+								jquery('#dateSelect').append(`<option value="${date}">${date}</option>`);
+							});
+							jquery('#timeSlotSelect').empty();
+							jquery('#timeSlotSelect').append('<option value="">请先选择日期</option>');
+							form.render('select');
+						}, 200);
+						
+						// 显示对话框
+						var dialogElem = jquery('#reservationDialog');
+						dialogElem.css('display', 'block');
+						console.log("显示预约对话框");
+					},
+					
+					// 关闭预约对话框
+					closeReservationDialog() {
+						var dialogElem = jquery('#reservationDialog');
+						dialogElem.css('display', 'none');
+						console.log("关闭预约对话框");
+					},
+					
+					// 关闭成功对话框
+					closeSuccessDialog() {
+						var dialogElem = jquery('#successDialog');
+						dialogElem.css('display', 'none');
+						console.log("关闭成功对话框");
+					},
+					
+					// 加载可用预约日期
+					loadAvailableDates() {
+						console.log("加载医生可用预约日期, 医生ID:", vue.detail.id);
+						
+						// 用当前医生ID查询排班信息
+						http.request(`schedule/page`, 'get', {
+							doctorId: vue.detail.id,
+							page: 1,
+							limit: 100
+						}, function(res) {
+							console.log("可用日期查询结果:", res);
+							if (res.code == 0 && res.data && res.data.list) {
+								// 提取不重复的日期
+								let dates = [];
+								try {
+									res.data.list.forEach(item => {
+										if (item.maxPatients > item.bookedCount && !dates.includes(item.workDate)) {
+											dates.push(item.workDate);
+										}
+									});
+									vue.availableDates = dates.sort();
+									console.log("可用日期列表:", vue.availableDates);
+									
+									// 更新日期选择器
+									setTimeout(() => {
+										jquery('#dateSelect').empty();
+										jquery('#dateSelect').append('<option value="">请选择日期</option>');
+										vue.availableDates.forEach(date => {
+											jquery('#dateSelect').append(`<option value="${date}">${date}</option>`);
+										});
+										layui.form.render('select');
+									}, 100);
+									
+									if (dates.length === 0) {
+										layer.msg('该医生暂无可预约时间', { time: 2000, icon: 0 });
+									}
+								} catch (error) {
+									console.error("处理日期数据出错:", error);
+									layer.msg('处理日期数据出错', { time: 2000, icon: 2 });
+								}
+							} else {
+								layer.msg(res.msg || '获取可预约日期失败', { time: 2000, icon: 2 });
+							}
+						});
+					},
+					
+					// 加载指定日期的可用时间槽
+					loadAvailableTimeSlots(date) {
+						console.log("加载日期的时间槽:", date);
+						if (!date) {
+							vue.availableTimeSlots = [];
+							jquery('#timeSlotSelect').empty();
+							jquery('#timeSlotSelect').append('<option value="">请先选择日期</option>');
+							layui.form.render('select');
+							return;
+						}
+						vue.selectedDate = date;
+						
+						// 显示加载中
+						layer.load(1);
+						
+						// 查询该医生在所选日期的排班
+						http.request(`schedule/page`, 'get', {
+							page: 1,
+							limit: 100,
+							doctorId: vue.detail.id,
+							workDate: date
+						}, function(res) {
+							// 关闭加载提示
+							layer.closeAll('loading');
+							
+							console.log("排班查询结果:", res);
+							if (res.code == 0 && res.data && res.data.list) {
+								// 过滤出有可用名额的时间段
+								let slots = res.data.list.filter(item => item.maxPatients > item.bookedCount);
+								
+								// 创建一个Map来处理重复的时间段，保留id最小的一个
+								let timeSlotMap = new Map();
+								slots.forEach(item => {
+									if (!timeSlotMap.has(item.timeSlot) || 
+										timeSlotMap.get(item.timeSlot).id > item.id) {
+										timeSlotMap.set(item.timeSlot, item);
+									}
+								});
+								
+								// 将Map转换回数组
+								vue.availableTimeSlots = Array.from(timeSlotMap.values());
+								console.log("处理后的可用时间槽:", vue.availableTimeSlots);
+								
+								// 更新时间段选择下拉框
+								jquery('#timeSlotSelect').empty();
+								jquery('#timeSlotSelect').append('<option value="">请选择时间段</option>');
+								
+								vue.availableTimeSlots.forEach(item => {
+									jquery('#timeSlotSelect').append(`<option value="${item.id}">${item.timeSlot} (剩余名额: ${item.maxPatients - item.bookedCount})</option>`);
+								});
+								
+								layui.form.render('select');
+								
+								if (vue.availableTimeSlots.length === 0) {
+									layer.msg('该日期暂无可预约时间段', { time: 2000, icon: 0 });
+								}
+							} else {
+								layer.msg(res.msg || '获取排班信息失败', { time: 2000, icon: 2 });
+							}
+						});
+					},
+					
+					// 获取用户ID
+					getUserId() {
+						// 从localStorage获取用户ID，支持多种可能的键名
+						let userId = localStorage.getItem('userid'); // 系统中用的是userid而非userId
+						
+						// 调试输出
+						console.log("获取到的用户ID:", userId);
+						
+						if (!userId) {
+							// 尝试从userInfo对象中获取
+							let userInfo = localStorage.getItem('userInfo');
+							if (userInfo) {
+								try {
+									userInfo = JSON.parse(userInfo);
+									userId = userInfo.id;
+									console.log("从userInfo获取到的用户ID:", userId);
+								} catch (e) {
+									console.error('解析userInfo失败:', e);
+								}
+							}
+							
+							// 尝试从其他可能的键获取
+							if (!userId) {
+								const possibleKeys = ['id', 'user_id', 'yonghuId', 'yishenId'];
+								for (const key of possibleKeys) {
+									userId = localStorage.getItem(key);
+									if (userId) {
+										console.log(`从${key}获取到的用户ID:`, userId);
+										break;
+									}
+								}
+							}
+						}
+						
+						return userId;
+					},
+					
+					// 提交预约
+					submitReservation() {
+						// 验证是否选择了日期和时间段
+						if (!vue.selectedDate) {
+							layer.msg('请选择预约日期', { time: 2000, icon: 2 });
+							return;
+						}
+						if (!vue.selectedScheduleId) {
+							layer.msg('请选择预约时间段', { time: 2000, icon: 2 });
+							return;
+						}
+						
+						// 获取用户ID，验证是否已登录
+						let userId = vue.getUserId();
+						if (!userId) {
+							layer.msg('请先登录', { time: 2000, icon: 0 }, function() {
+								window.location.href = '../login/login.html';
+							});
+							return;
+						}
+						
+						// 获取Token
+						let token = localStorage.getItem('Token');
+						if (!token) {
+							layer.msg('登录已过期，请重新登录', { time: 2000, icon: 0 }, function() {
+								window.location.href = '../login/login.html';
+							});
+							return;
+						}
+						
+						// 获取选中的排班信息
+						let selectedSchedule = vue.availableTimeSlots.find(item => item.id == vue.selectedScheduleId);
+						if (!selectedSchedule) {
+							layer.msg('获取排班信息失败', { time: 2000, icon: 2 });
+							return;
+						}
+						
+						console.log("选中的排班信息:", selectedSchedule);
+						
+						// 先检查用户是否已经预约了该医生在同一时段
+						http.request('appointment/page', 'get', {
+							doctorId: vue.detail.id,
+							userId: userId,
+							appointDate: vue.selectedDate,
+							timeSlot: selectedSchedule.timeSlot
+						}, function(res) {
+							console.log("查询是否已预约:", res);
+							
+							if (res.code == 0 && res.data && res.data.list && res.data.list.length > 0) {
+								// 用户已经预约了这个时间段
+								layer.msg('您已预约过该医生的这个时间段，不能重复预约', { time: 3000, icon: 0 });
+								return;
+							}
+							
+							// 继续提交预约
+							// 构建预约数据
+							let appointmentData = {
+								doctorId: vue.detail.id,
+								userId: userId,
+								appointDate: vue.selectedDate,
+								timeSlot: selectedSchedule.timeSlot,
+								status: 'PENDING',
+								// 添加参考字段
+								scheduleId: vue.selectedScheduleId,
+								// 添加冗余字段以支持可能的不同命名约定
+								yishengId: vue.detail.id,
+								yonghuId: userId,
+								yishengxingming: vue.detail.yishengxingming,
+								yonghuxingming: localStorage.getItem('adminName') || ''
+							};
+							
+							console.log("提交预约数据:", appointmentData);
+							
+							// 使用系统提供的http.requestJson方法发送JSON数据
+							console.log("提交预约请求到:", http.baseurl + 'appointment/save');
+							http.requestJson('appointment/save', 'post', appointmentData, function(res) {
+								console.log("预约响应:", res);
+								
+								if (res.code == 0) {
+									// 预约成功
+									layer.alert('预约成功，请按时就诊', {
+										icon: 6,
+										btn: ['确定']
+									}, function(index) {
+										// 关闭对话框
+										layer.close(index);
+										// 隐藏预约对话框
+										vue.hideReservationDialog();
+										// 可选：刷新页面或更新数据
+										window.location.reload();
+									});
+								} else {
+									// 处理常见错误
+									let errorMsg = res.msg || '预约失败，请稍后再试';
+									
+									if (errorMsg.includes('Duplicate') || errorMsg.includes('重复')) {
+										errorMsg = '您已预约过该医生的这个时间段，不能重复预约';
+									} else if (errorMsg.includes('full') || errorMsg.includes('已约满')) {
+										errorMsg = '该时段预约人数已满，请选择其他时间';
+									}
+									
+									layer.msg(errorMsg, { time: 3000, icon: 2 });
+									
+									// 如果是其他错误，尝试替代方法
+									if (!errorMsg.includes('重复') && !errorMsg.includes('已约满')) {
+										console.log("标准方法失败，尝试使用替代方法...");
+										vue.submitReservationAlt();
+									}
+								}
+							});
+						});
+					},
+					
+					// 提交预约（替代方法）
+					submitReservationAlt() {
+						// 验证是否选择了日期和时间段
+						if (!vue.selectedDate) {
+							layer.msg('请选择预约日期', { time: 2000, icon: 2 });
+							return;
+						}
+						if (!vue.selectedScheduleId) {
+							layer.msg('请选择预约时间段', { time: 2000, icon: 2 });
+							return;
+						}
+						
+						// 获取用户ID，验证是否已登录
+						let userId = vue.getUserId();
+						if (!userId) {
+							layer.msg('请先登录', { time: 2000, icon: 0 }, function() {
+								window.location.href = '../login/login.html';
+							});
+							return;
+						}
+						
+						// 获取Token
+						let token = localStorage.getItem('Token');
+						if (!token) {
+							layer.msg('登录已过期，请重新登录', { time: 2000, icon: 0 }, function() {
+								window.location.href = '../login/login.html';
+							});
+							return;
+						}
+						
+						// 获取选中的排班信息
+						let selectedSchedule = vue.availableTimeSlots.find(item => item.id == vue.selectedScheduleId);
+						if (!selectedSchedule) {
+							layer.msg('获取排班信息失败', { time: 2000, icon: 2 });
+							return;
+						}
+						
+						console.log("选中的排班信息(备选方法):", selectedSchedule);
+						
+						// 先检查用户是否已经预约了该医生在同一时段
+						http.request('appointment/page', 'get', {
+							doctorId: vue.detail.id,
+							userId: userId,
+							appointDate: vue.selectedDate,
+							timeSlot: selectedSchedule.timeSlot
+						}, function(res) {
+							console.log("查询是否已预约(备选方法):", res);
+							
+							if (res.code == 0 && res.data && res.data.list && res.data.list.length > 0) {
+								// 用户已经预约了这个时间段
+								layer.msg('您已预约过该医生的这个时间段，不能重复预约', { time: 3000, icon: 0 });
+								return;
+							}
+							
+							// 继续提交预约
+							// 使用loading提示
+							layer.load(1);
+							
+							// 准备表单数据
+							var formData = new FormData();
+							formData.append('doctorId', vue.detail.id);
+							formData.append('userId', userId);
+							formData.append('appointDate', vue.selectedDate);
+							formData.append('timeSlot', selectedSchedule.timeSlot);
+							formData.append('status', 'PENDING');
+							// 添加参考字段
+							formData.append('scheduleId', vue.selectedScheduleId);
+							// 添加冗余字段以支持可能的不同命名约定
+							formData.append('yishengId', vue.detail.id);
+							formData.append('yonghuId', userId);
+							formData.append('yishengxingming', vue.detail.yishengxingming);
+							formData.append('yonghuxingming', localStorage.getItem('adminName') || '');
+							
+							console.log("尝试替代方法提交预约...");
+							
+							// 使用jQuery直接提交
+							jquery.ajax({
+								url: http.baseurl + "appointment/save",
+								type: 'POST',
+								data: formData,
+								processData: false,
+								contentType: false,
+								headers: {
+									"Token": token
+								},
+								success: function(res) {
+									layer.closeAll('loading');
+									console.log("预约响应(替代方法):", res);
+									
+									if (res.code == 0) {
+										// 预约成功
+										layer.alert('预约成功，请按时就诊', {
+											icon: 6,
+											btn: ['确定']
+										}, function(index) {
+											// 关闭对话框
+											layer.close(index);
+											// 隐藏预约对话框
+											vue.hideReservationDialog();
+											// 可选：刷新页面或更新数据
+											window.location.reload();
+										});
+									} else {
+										// 预约失败
+										let errorMsg = res.msg || '预约失败，请稍后再试';
+										
+										if (errorMsg.includes('Duplicate') || errorMsg.includes('重复')) {
+											errorMsg = '您已预约过该医生的这个时间段，不能重复预约';
+										} else if (errorMsg.includes('full') || errorMsg.includes('已约满')) {
+											errorMsg = '该时段预约人数已满，请选择其他时间';
+										}
+										
+										console.error("预约失败(替代方法):", errorMsg);
+										layer.msg('预约失败: ' + errorMsg, { time: 3000, icon: 2 });
+									}
+								},
+								error: function(xhr, status, error) {
+									layer.closeAll('loading');
+									console.error("请求错误(替代方法):", error);
+									console.error("状态:", xhr.status);
+									console.error("响应:", xhr.responseText);
+									layer.msg('预约请求错误: ' + error, { time: 3000, icon: 2 });
+								}
+							});
+						});
+					},
+					
+					// 隐藏预约对话框
+					hideReservationDialog() {
+						var dialogElem = jquery('#reservationDialog');
+						dialogElem.css('display', 'none');
+						console.log("隐藏预约对话框");
+						
+						// 重置选择
+						this.selectedDate = null;
+						this.selectedScheduleId = null;
+						this.availableTimeSlots = [];
+					}
+				}
+			});
+
+			var limit = 10;
+
+			// 数据ID
+			var id = http.getParam('id');
+			vue.detail.id = id;
+			vue.baseurl = http.baseurl;
+
+			// 医生信息
+			http.request('yisheng/detail/' + id, 'get', {}, function(res) {
+				// 详情信息
+				if (res.code == 0) {
+					vue.detail = res.data;
+				vue.title = vue.detail.yishengxingming;
+					
+				// 轮播图片
+					if (vue.detail.touxiang) {
+						let imgList = vue.detail.touxiang.split(",");
+						// 确保图片路径正确
+						vue.swiperList = imgList.map(item => {
+							// 如果已经是完整路径，则直接使用
+							if (item.startsWith('http') || item.startsWith('/')) {
+								return item;
+							}
+							// 否则，确保路径不重复添加upload/
+							if (item.startsWith('upload/')) {
+								return item;
+							} else {
+								return 'upload/' + item;
+							}
+						});
+					} else {
+						// 如果没有头像，使用默认头像
+						vue.swiperList = ['img/default-avatar.jpg'];
+					}
+					
+					console.log("医生信息加载成功:", vue.detail);
+					console.log("图片列表:", vue.swiperList);
+					console.log("图片完整路径示例:", vue.baseurl + '/' + (vue.swiperList.length > 0 ? vue.swiperList[0] : ''));
+					
+				// 轮播图
+				vue.$nextTick(() => {
+				  carousel.render({
+					elem: '#swiper',
+							width: '100%',
+							height: '300px',
+					arrow: 'hover',
+							anim: 'fade',
+					autoplay: 'true',
+					interval: '3000',
+							indicator: 'inside',
+							autoplay: true
+						});
+					});
+				} else {
+					console.error("获取医生信息失败:", res.msg);
+					layer.msg('获取医生信息失败: ' + res.msg, {
+						time: 2000,
+						icon: 2
+					});
+				}
+			});
+
+			// 监听日期选择变化
+			form.on('select(dateSelect)', function(data){
+				vue.selectedDate = data.value;
+				if (data.value) {
+					vue.loadAvailableTimeSlots(data.value);
+				}
+			});
+			
+			// 监听时间段选择变化
+			form.on('select(timeSlotSelect)', function(data){
+				vue.selectedScheduleId = data.value;
+			});
+			});
+		</script>
+	</body>
+</html>

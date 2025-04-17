@@ -1,0 +1,66 @@
+@startuml 诊断管理时序图
+
+' 设置样式
+skinparam backgroundColor white
+skinparam handwritten false
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam sequence {
+    ArrowColor black
+    ParticipantBorderColor black
+    ParticipantBackgroundColor white
+}
+
+' 定义参与者
+actor 医生 as doctor
+actor 患者 as patient
+participant "前端界面" as front
+participant "DiagnosisController" as controller
+participant "DiagnosisService" as service
+participant "DiagnosisDao" as dao
+database "数据库" as db
+
+' 创建诊断记录流程
+== 创建诊断记录 ==
+doctor -> front: 填写诊断信息
+front -> controller: 提交诊断信息
+controller -> service: createDiagnosis(diagnosisInfo)
+service -> dao: save(diagnosisInfo)
+dao -> db: 插入诊断数据
+db --> dao: 返回结果
+dao --> service: 返回结果
+service --> controller: 返回结果
+controller --> front: 返回创建结果
+front --> doctor: 显示创建结果
+
+' 查看诊断记录流程
+== 查看诊断记录 ==
+patient -> front: 查看诊断记录
+front -> controller: 获取诊断记录
+controller -> service: getDiagnosisList(patientId)
+service -> dao: findByPatientId(patientId)
+dao -> db: 查询诊断数据
+db --> dao: 返回诊断信息
+dao --> service: 返回诊断信息
+service --> controller: 返回诊断信息
+controller --> front: 返回诊断信息
+front --> patient: 显示诊断记录
+
+' 更新诊断记录流程
+== 更新诊断记录 ==
+doctor -> front: 修改诊断信息
+front -> controller: 提交更新请求
+controller -> service: updateDiagnosis(diagnosisId, diagnosisInfo)
+service -> dao: findById(diagnosisId)
+dao -> db: 查询诊断数据
+db --> dao: 返回诊断信息
+dao --> service: 返回诊断信息
+service -> dao: update(diagnosisInfo)
+dao -> db: 更新诊断数据
+db --> dao: 返回结果
+dao --> service: 返回结果
+service --> controller: 返回结果
+controller --> front: 返回更新结果
+front --> doctor: 显示更新结果
+
+@enduml 

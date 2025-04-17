@@ -1,0 +1,109 @@
+@startuml 医疗预约系统E-R图
+
+' 设置样式
+skinparam backgroundColor white
+skinparam handwritten false
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam class {
+    BackgroundColor white
+    BorderColor black
+    ArrowColor black
+}
+
+' 定义实体
+entity "用户" as user {
+    + id : Long <<PK>>
+    --
+    username : String
+    password : String
+    role : String
+}
+
+entity "医生" as doctor {
+    + id : Long <<PK>>
+    --
+    name : String
+    specialty : String
+    department : String
+}
+
+entity "患者" as patient {
+    + id : Long <<PK>>
+    --
+    name : String
+    age : Integer
+    gender : String
+}
+
+entity "排班" as schedule {
+    + id : Long <<PK>>
+    --
+    date : Date
+    time_slot : String
+}
+
+entity "预约" as appointment {
+    + id : Long <<PK>>
+    --
+    appointment_time : Date
+    status : Integer
+}
+
+entity "诊断记录" as diagnosis {
+    + id : Long <<PK>>
+    --
+    diagnosis : String
+    prescription : String
+}
+
+entity "咨询信息" as consultation {
+    + id : Long <<PK>>
+    --
+    content : String
+    reply : String
+}
+
+entity "试卷" as exam_paper {
+    + id : Long <<PK>>
+    --
+    title : String
+    time : Integer
+}
+
+entity "试题" as exam_question {
+    + id : Long <<PK>>
+    --
+    question : String
+    answer : String
+}
+
+entity "考试记录" as exam_record {
+    + id : Long <<PK>>
+    --
+    score : Integer
+}
+
+entity "公告" as notice {
+    + id : Long <<PK>>
+    --
+    title : String
+    content : String
+}
+
+' 定义关系
+user ||--o{ doctor
+user ||--o{ patient
+doctor ||--o{ schedule
+doctor ||--o{ appointment
+doctor ||--o{ diagnosis
+doctor ||--o{ consultation
+patient ||--o{ appointment
+patient ||--o{ diagnosis
+patient ||--o{ consultation
+patient ||--o{ exam_record
+schedule ||--o{ appointment
+exam_paper ||--o{ exam_question
+exam_paper ||--o{ exam_record
+
+@enduml 

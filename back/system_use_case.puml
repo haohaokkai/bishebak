@@ -1,0 +1,129 @@
+@startuml 医疗预约系统用例图
+
+' 设置样式
+skinparam backgroundColor white
+skinparam handwritten false
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam usecase {
+    BackgroundColor white
+    BorderColor black
+    ArrowColor black
+}
+skinparam package {
+    BackgroundColor white
+    BorderColor black
+}
+
+' 定义参与者（竖着排列）
+actor 管理员 as admin
+actor 医生 as doctor
+actor 患者 as patient
+actor 系统 as system
+
+' 定义用例包
+package "用户管理" {
+    usecase "用户注册" as UC1
+    usecase "用户登录" as UC2
+    usecase "个人信息管理" as UC3
+    usecase "密码修改" as UC4
+}
+
+package "医生管理" {
+    usecase "医生信息管理" as UC5
+    usecase "排班管理" as UC6
+    usecase "查看预约" as UC7
+    usecase "诊断记录管理" as UC8
+}
+
+package "预约管理" {
+    usecase "预约挂号" as UC9
+    usecase "取消预约" as UC10
+    usecase "查看预约记录" as UC11
+    usecase "预约提醒" as UC12
+}
+
+package "咨询管理" {
+    usecase "在线咨询" as UC13
+    usecase "查看咨询历史" as UC14
+    usecase "回复咨询" as UC15
+}
+
+package "考试管理" {
+    usecase "试卷管理" as UC16
+    usecase "试题管理" as UC17
+    usecase "考试记录管理" as UC18
+    usecase "在线考试" as UC19
+}
+
+package "公告管理" {
+    usecase "发布公告" as UC20
+    usecase "查看公告" as UC21
+    usecase "公告管理" as UC22
+}
+
+' 定义关系
+admin --> UC1
+admin --> UC2
+admin --> UC3
+admin --> UC4
+admin --> UC5
+admin --> UC6
+admin --> UC16
+admin --> UC17
+admin --> UC20
+admin --> UC22
+
+doctor --> UC2
+doctor --> UC3
+doctor --> UC4
+doctor --> UC5
+doctor --> UC6
+doctor --> UC7
+doctor --> UC8
+doctor --> UC15
+doctor --> UC21
+
+patient --> UC2
+patient --> UC3
+patient --> UC4
+patient --> UC9
+patient --> UC10
+patient --> UC11
+patient --> UC13
+patient --> UC14
+patient --> UC19
+patient --> UC21
+
+system --> UC12
+
+' 定义包含关系
+UC9 ..> UC6 : <<include>>
+UC8 ..> UC7 : <<include>>
+UC19 ..> UC16 : <<include>>
+UC19 ..> UC17 : <<include>>
+
+' 定义扩展关系
+UC12 ..|> UC9 : <<extend>>
+UC15 ..|> UC13 : <<extend>>
+
+' 添加注释
+note right of admin
+  管理员负责系统的
+  整体管理和维护
+end note
+
+note right of doctor
+  医生可以管理自己的
+  排班和诊断记录
+end note
+
+note right of patient
+  患者可以进行预约、
+  咨询和考试
+end note
+
+' 设置布局
+left to right direction
+
+@enduml 

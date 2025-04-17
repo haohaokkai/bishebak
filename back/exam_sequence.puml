@@ -1,0 +1,93 @@
+@startuml 考试管理时序图
+
+' 设置样式
+skinparam backgroundColor white
+skinparam handwritten false
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam sequence {
+    ArrowColor black
+    ParticipantBorderColor black
+    ParticipantBackgroundColor white
+}
+
+' 定义参与者
+actor 患者 as patient
+actor 管理员 as admin
+participant "前端界面" as front
+participant "ExamController" as controller
+participant "ExamService" as service
+participant "ExamDao" as dao
+database "数据库" as db
+
+' 创建试卷流程
+== 创建试卷 ==
+admin -> front: 填写试卷信息
+front -> controller: 提交试卷信息
+controller -> service: createExamPaper(paperInfo)
+service -> dao: save(paperInfo)
+dao -> db: 插入试卷数据
+db --> dao: 返回结果
+dao --> service: 返回结果
+service --> controller: 返回结果
+controller --> front: 返回创建结果
+front --> admin: 显示创建结果
+
+' 添加试题流程
+== 添加试题 ==
+admin -> front: 填写试题内容
+front -> controller: 提交试题信息
+controller -> service: createExamQuestion(questionInfo)
+service -> dao: save(questionInfo)
+dao -> db: 插入试题数据
+db --> dao: 返回结果
+dao --> service: 返回结果
+service --> controller: 返回结果
+controller --> front: 返回添加结果
+front --> admin: 显示添加结果
+
+' 开始考试流程
+== 开始考试 ==
+patient -> front: 选择试卷
+front -> controller: 获取试卷信息
+controller -> service: getExamPaper(paperId)
+service -> dao: findById(paperId)
+dao -> db: 查询试卷数据
+db --> dao: 返回试卷信息
+dao --> service: 返回试卷信息
+service -> dao: getQuestionsByPaperId(paperId)
+dao -> db: 查询试题数据
+db --> dao: 返回试题信息
+dao --> service: 返回试题信息
+service --> controller: 返回试卷和试题
+controller --> front: 返回试卷和试题
+front --> patient: 显示考试界面
+
+' 提交答案流程
+== 提交答案 ==
+patient -> front: 提交答案
+front -> controller: 提交考试结果
+controller -> service: submitExam(patientId, paperId, answers)
+service -> service: 计算得分
+service -> dao: saveExamRecord(recordInfo)
+dao -> db: 插入考试记录
+db --> dao: 返回结果
+dao --> service: 返回结果
+service --> controller: 返回结果
+controller --> front: 返回提交结果
+front --> patient: 显示考试结果
+
+' 查看考试记录流程
+== 查看考试记录 ==
+patient -> front: 查看考试记录
+front -> controller: 获取考试记录
+controller -> service: getExamRecords(patientId)
+service -> dao: findByPatientId(patientId)
+dao -> db: 查询考试记录
+db --> dao: 返回考试记录
+dao --> service: 返回考试记录
+service --> controller: 返回考试记录
+controller --> front: 返回考试记录
+front --> patient: 显示考试记录
+
+@enduml 

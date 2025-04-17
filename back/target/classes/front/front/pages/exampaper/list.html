@@ -1,0 +1,372 @@
+<!-- 论坛中心 -->
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<title>论坛中心</title>
+		<link rel="stylesheet" href="../../layui/css/layui.css">
+		<!-- 样式 -->
+		<link rel="stylesheet" href="../../css/style.css" />
+		<!-- 主题（主要颜色设置） -->
+		<link rel="stylesheet" href="../../css/theme.css" />
+		<!-- 通用的css -->
+		<link rel="stylesheet" href="../../css/common.css" />
+	</head>
+	<style>
+		html::after {
+			position: fixed;
+			top: 0;
+			right: 0;
+			left: 0;
+			bottom: 0;
+			content: '';
+			display: block;
+			background-attachment: fixed;
+			background-size: cover;
+			background-position: center;
+			background-image: url('../../img/login-bg.jpg');
+			z-index: -1;
+		}
+		
+		/* 现代化样式 */
+		.modern-container {
+			max-width: 1200px;
+			margin: 30px auto;
+			padding: 0 15px;
+		}
+		
+		.modern-title {
+			text-align: center;
+			margin-bottom: 30px;
+			padding: 15px 0;
+			border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+			color: #fff;
+			font-size: 24px;
+			font-weight: 600;
+			text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+		}
+		
+		.modern-title span {
+			display: block;
+			font-size: 16px;
+			margin-top: 5px;
+			opacity: 0.8;
+		}
+		
+		.modern-search {
+			background-color: rgba(255, 255, 255, 0.9);
+			border-radius: 8px;
+			padding: 15px;
+			margin-bottom: 20px;
+			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+			display: flex;
+			align-items: center;
+			justify-content: flex-end;
+		}
+		
+		.modern-search input {
+			width: 200px;
+			padding: 8px 15px;
+			border: 1px solid #ddd;
+			border-radius: 4px;
+			margin-right: 10px;
+			font-size: 14px;
+			transition: all 0.3s ease;
+		}
+		
+		.modern-search input:focus {
+			border-color: #1f93ff;
+			box-shadow: 0 0 0 2px rgba(31, 147, 255, 0.2);
+			outline: none;
+		}
+		
+		.modern-search button {
+			background-color: #1f93ff;
+			color: #fff;
+			border: none;
+			border-radius: 4px;
+			padding: 8px 15px;
+			cursor: pointer;
+			transition: all 0.3s ease;
+			display: flex;
+			align-items: center;
+		}
+		
+		.modern-search button:hover {
+			background-color: #0066cc;
+			transform: translateY(-2px);
+		}
+		
+		.modern-search button i {
+			margin-right: 5px;
+		}
+		
+		.modern-table {
+			background-color: rgba(255, 255, 255, 0.9);
+			border-radius: 8px;
+			overflow: hidden;
+			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+		}
+		
+		.modern-table thead tr {
+			background-color: #1f93ff;
+			color: #fff;
+		}
+		
+		.modern-table th {
+			padding: 15px;
+			font-weight: 600;
+			text-align: left;
+		}
+		
+		.modern-table td {
+			padding: 12px 15px;
+			border-bottom: 1px solid #eee;
+		}
+		
+		.modern-table tbody tr:hover {
+			background-color: rgba(31, 147, 255, 0.05);
+		}
+		
+		.modern-btn {
+			background-color: #1f93ff;
+			color: #fff;
+			border: none;
+			border-radius: 4px;
+			padding: 6px 12px;
+			cursor: pointer;
+			transition: all 0.3s ease;
+			display: inline-flex;
+			align-items: center;
+		}
+		
+		.modern-btn:hover {
+			background-color: #0066cc;
+			transform: translateY(-2px);
+		}
+		
+		.modern-btn i {
+			margin-right: 5px;
+		}
+		
+		.modern-pager {
+			margin-top: 20px;
+			text-align: center;
+		}
+		
+		#swiper {
+			overflow: hidden;
+			border-radius: 8px;
+			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+		}
+		
+		#swiper .layui-carousel-ind li {
+			width: 16px;
+			height: 10px;
+			border-width: 0;
+			border-style: inset solid outset;
+			border-color: rgba(255, 255, 255, 0.3);
+			border-radius: 0px;
+			background-color: rgba(255, 255, 255, 1);
+			box-shadow: none;
+		}
+		
+		#swiper .layui-carousel-ind li.layui-this {
+			width: 18px;
+			height: 12px;
+			border-width: 0;
+			border-style: ridge;
+			border-color: rgba(255, 255, 255, 0.3);
+			border-radius: 0;
+			background-color: rgba(37, 117, 228, 0.62);
+			box-shadow: none;
+		}
+	</style>
+	<body>
+
+		<div id="app">
+			<!-- 轮播图 -->
+			<div class="layui-carousel" id="swiper" :style='{"boxShadow":"","margin":"0","borderColor":"rgba(255, 255, 255, 0.3)","borderRadius":"0","borderWidth":"0","width":"100%","borderStyle":"solid"}'>
+			  <div carousel-item id="swiper-item">
+				<div v-for="(item,index) in swiperList" :key="index">
+					<img style="width: 100%;height: 100%;object-fit:cover;" :src="item.img" />
+				</div>
+			  </div>
+			</div>
+			<!-- 轮播图 -->
+			
+			<div class="modern-container">
+				<!-- 标题 -->
+				<div class="modern-title">
+					<span>EXAM / PAPER</span>
+					<span>测试模板列表</span>
+				</div>
+				<!-- 标题 -->
+				
+				<div class="paper-container">
+					<div class="modern-search">
+						<input type="text" name="title" id="title" placeholder="名称" autocomplete="off" class="layui-input">
+						<button id="btn-search" type="button" class="layui-btn layui-btn-normal">
+							<i class="layui-icon layui-icon-search"></i>搜索
+						</button>
+					</div>
+					
+					<div class="modern-table">
+						<table class="layui-table" lay-skin="nob">
+							<thead>
+								<tr>
+									<th>测试模板名称</th>
+									<th>考试时长</th>
+									<th>创建时间</th>
+									<th>操作</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr v-for="(item,index) in dataList" v-bind:key="index">
+									<td>{{item.name}}</td>
+									<td>{{item.time}}分钟</td>
+									<td>{{item.addtime}}</td>
+									<td>
+										<button @click="exam(item.id)" type="button" class="modern-btn">
+											<i class="layui-icon">&#xe679;</i> 考试
+										</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					
+					<div class="modern-pager" id="pager" :style="{textAlign:2==1?'left':2==2?'center':'right'}"></div>
+				</div>
+			</div>
+		</div>
+
+		<!-- layui -->
+		<script src="../../layui/layui.js"></script>
+		<!-- vue -->
+		<script src="../../js/vue.js"></script>
+		<!-- 组件配置信息 -->
+		<script src="../../js/config.js"></script>
+		<!-- 扩展插件配置信息 -->
+		<script src="../../modules/config.js"></script>
+		<!-- 工具方法 -->
+		<script src="../../js/utils.js"></script>
+
+		<script>
+			var vue = new Vue({
+				el: '#app',
+				data: {
+					// 轮播图
+					swiperList: [{
+						img: '../../img/banner.jpg'
+					}],
+					dataList: []
+				},
+				filters: {
+					newsDesc: function(val) {
+						if (val) {
+							if (val.length > 200) {
+								return val.substring(0, 200).replace(/<[^>]*>/g).replace(/undefined/g, '');
+							} else {
+								return val.replace(/<[^>]*>/g).replace(/undefined/g, '');
+							}
+						}
+						return '';
+					}
+				},
+				methods: {
+					jump(url) {
+						jump(url)
+					},
+					// 进入考试
+					exam(id) {
+						let userid = localStorage.getItem("userid");
+						layui.http.request(`examrecord/deleteRecords?userid=${userid}&paperid=${id}`, 'post', {}, function(res) {
+							window.parent.location.href = `./exam.html?id=${id}`;
+						});
+					}
+				}
+			})
+
+			layui.use(['layer', 'element', 'carousel', 'laypage', 'http', 'jquery'], function() {
+				var layer = layui.layer;
+				var element = layui.element;
+				var carousel = layui.carousel;
+				var laypage = layui.laypage;
+				var http = layui.http;
+				var jquery = layui.jquery;
+
+				var limit = 5;
+
+				// 获取轮播图 数据
+				http.request('config/list', 'get', {
+					page: 1,
+					limit: 5
+				}, function(res) {
+					if (res.data.list.length > 0) {
+						let swiperList = [];
+						res.data.list.forEach(element => {
+							if (element.value != null) {
+								swiperList.push({
+									img: http.baseurl + element.value
+								});
+							}
+						});
+						vue.swiperList = swiperList;
+
+						vue.$nextTick(() => {
+							carousel.render({
+								elem: '#swiper',
+								width: '100%',
+								height: '450px',
+								arrow: 'hover',
+								anim: 'updown',
+								autoplay: 'true',
+								interval: '3000',
+								indicator: 'inside'
+							});
+						});
+					}
+				});
+
+                pageList();
+                // 搜索按钮
+                jquery('#btn-search').click(function(e) {
+                    pageList();
+                });
+				// 获取列表数据
+                function pageList() {
+                    http.request('exampaper/list', 'get', {
+                        page: 1,
+                        limit: limit,
+                        name: '%' + jquery('#title').val() + '%',
+                        status: 1
+                    }, function(res) {
+                        vue.dataList = res.data.list
+                        // 分页
+                        laypage.render({
+                            elem: 'pager',
+                            count: res.data.total,
+                            limit: limit,
+                            groups: 5,
+                            layout: ["prev","page","next"],
+                            theme: '#2C73D5',
+                            jump: function(obj, first) {
+                                //首次不执行
+                                if (!first) {
+                                    http.request('news/list', 'get', {
+                                        page: obj.curr,
+                                        limit: obj.limit
+                                    }, function(res) {
+                                        vue.dataList = res.data.list
+                                    })
+                                }
+                            }
+                        });
+                    })
+                }
+			});
+		</script>
+	</body>
+</html>

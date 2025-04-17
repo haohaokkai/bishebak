@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<title>诊断详情</title>
+	<link rel="stylesheet" href="../../layui/css/layui.css">
+	<!-- 样式 -->
+	<link rel="stylesheet" href="../../css/style.css" />
+	<!-- 主题（主要颜色设置） -->
+	<link rel="stylesheet" href="../../css/theme.css" />
+	<!-- 通用的css -->
+	<link rel="stylesheet" href="../../css/common.css" />
+</head>
+<style>
+    :root {
+        --primary-color: #409EFF;
+        --secondary-color: #67C23A;
+        --background-color: #f5f7fa;
+        --text-color: #303133;
+        --border-color: #DCDFE6;
+        --hover-color: #ecf5ff;
+        --card-shadow: 0 2px 12px 0 rgba(0,0,0,0.1);
+        --card-hover-shadow: 0 4px 16px 0 rgba(0,0,0,0.2);
+    }
+
+    body {
+        background-color: var(--background-color);
+        color: var(--text-color);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        background-image: url('../../img/login-bg.jpg');
+        background-size: cover;
+        background-attachment: fixed;
+        background-position: center;
+        margin: 0;
+        padding: 0;
+    }
+
+    .modern-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .modern-breadcrumb {
+        background: rgba(255, 255, 255, 0.9);
+        padding: 15px 20px;
+        border-radius: 8px;
+        box-shadow: var(--card-shadow);
+        margin-bottom: 20px;
+        backdrop-filter: blur(10px);
+    }
+
+    .modern-breadcrumb .layui-breadcrumb {
+        visibility: visible;
+    }
+
+    .modern-breadcrumb .layui-breadcrumb a {
+        color: var(--primary-color);
+        text-decoration: none;
+    }
+
+    .modern-breadcrumb .layui-breadcrumb cite {
+        color: var(--text-color);
+    }
+
+    .modern-detail-card {
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 8px;
+        box-shadow: var(--card-shadow);
+        overflow: hidden;
+        backdrop-filter: blur(10px);
+        margin-bottom: 20px;
+    }
+
+    .modern-detail-header {
+        padding: 20px;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .modern-detail-title {
+        font-size: 24px;
+        font-weight: bold;
+        color: var(--text-color);
+        margin: 0;
+    }
+
+    .modern-detail-content {
+        padding: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 30px;
+    }
+
+    .modern-detail-image {
+        width: 100%;
+        height: 300px;
+        object-fit: contain;
+        background-color: rgba(255, 255, 255, 0.5);
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+
+    .modern-detail-info {
+        flex: 1;
+        min-width: 300px;
+    }
+
+    .modern-detail-item {
+        display: flex;
+        margin-bottom: 15px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .modern-detail-label {
+        width: 100px;
+        font-weight: bold;
+        color: var(--text-color);
+    }
+
+    .modern-detail-value {
+        flex: 1;
+        color: var(--text-color);
+    }
+
+    .modern-detail-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    .modern-btn {
+        padding: 8px 20px;
+        border-radius: 4px;
+        border: none;
+        cursor: pointer;
+        font-size: 14px;
+        transition: all 0.3s;
+    }
+
+    .modern-btn-primary {
+        background-color: var(--primary-color);
+        color: white;
+    }
+
+    .modern-btn-primary:hover {
+        background-color: #66b1ff;
+    }
+
+    .modern-content {
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 8px;
+        box-shadow: var(--card-shadow);
+        padding: 20px;
+        margin-top: 20px;
+        backdrop-filter: blur(10px);
+    }
+
+    .modern-content img {
+        max-width: 100%;
+        border-radius: 4px;
+        margin: 10px 0;
+    }
+
+    .modern-content p {
+        margin: 10px 0;
+        line-height: 1.8;
+    }
+
+    .modern-carousel {
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: var(--card-shadow);
+        width: 100%;
+        max-width: 400px;
+        margin: 0 auto;
+    }
+
+    .modern-carousel .layui-carousel {
+        width: 100% !important;
+    }
+
+    .modern-carousel .layui-carousel-item {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: rgba(255, 255, 255, 0.5);
+    }
+
+    .modern-carousel .layui-carousel-item img {
+        max-width: 100%;
+        max-height: 400px;
+        object-fit: contain;
+    }
+
+    .modern-carousel .layui-carousel-ind li {
+        background-color: rgba(255, 255, 255, 0.8) !important;
+        border-radius: 50% !important;
+        width: 10px !important;
+        height: 10px !important;
+    }
+
+    .modern-carousel .layui-carousel-ind li.layui-this {
+        background-color: var(--primary-color) !important;
+    }
+
+    @media (max-width: 768px) {
+        .modern-container {
+            padding: 10px;
+        }
+
+        .modern-detail-content {
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .modern-detail-image {
+            height: 300px;
+        }
+
+        .modern-detail-actions {
+            flex-direction: column;
+        }
+
+        .modern-btn {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+    }
+</style>
+<body>
+	<div id="app">
+        <div class="modern-container">
+            <div class="modern-breadcrumb">
+                <span class="layui-breadcrumb">
+                    <a href="../home/home.html">首页</a>
+                    <a><cite>诊断详情</cite></a>
+                </span>
+            </div>
+
+            <div class="modern-detail-card">
+                <div class="modern-detail-header">
+                    <h1 class="modern-detail-title">诊断详情</h1>
+                </div>
+                <div class="modern-detail-content">
+                    <div class="modern-carousel">
+                        <div class="layui-carousel" id="swiper">
+                            <div carousel-item>
+                                <div v-if="swiperList.length" v-for="(item,index) in swiperList" :key="index">
+                                    <img class="modern-detail-image" :src="baseurl + item" />
+                                </div>
+                                <div v-if="!swiperList.length">
+                                    <img class="modern-detail-image" src="../../img/default-avatar.jpg" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modern-detail-info">
+                        <div class="modern-detail-item">
+                            <div class="modern-detail-label">用户账号：</div>
+                            <div class="modern-detail-value">{{detail.yonghuzhanghao}}</div>
+                        </div>
+                        <div class="modern-detail-item">
+                            <div class="modern-detail-label">用户姓名：</div>
+                            <div class="modern-detail-value">{{detail.yonghuxingming}}</div>
+                        </div>
+                        <div class="modern-detail-item">
+                            <div class="modern-detail-label">医生账号：</div>
+                            <div class="modern-detail-value">{{detail.yishengzhanghao}}</div>
+                        </div>
+                        <div class="modern-detail-item">
+                            <div class="modern-detail-label">医生姓名：</div>
+                            <div class="modern-detail-value">{{detail.yishengxingming}}</div>
+                        </div>
+                        <div class="modern-detail-item">
+                            <div class="modern-detail-label">诊断时间：</div>
+                            <div class="modern-detail-value">{{detail.zhenduanshijian}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modern-content">
+                <h2>诊断内容</h2>
+                <div v-html="detail.zhenduanneirong"></div>
+            </div>
+        </div>
+	</div>
+
+	<script src="../../layui/layui.js"></script>
+	<script src="../../js/vue.js"></script>
+	<!-- 组件配置信息 -->
+	<script src="../../js/config.js"></script>
+	<!-- 扩展插件配置信息 -->
+	<script src="../../modules/config.js"></script>
+	<!-- 工具方法 -->
+	<script src="../../js/utils.js"></script>
+
+	<script>
+		var vue = new Vue({
+			el: '#app',
+			data: {
+				// 轮播图
+				swiperList: [],
+				// 数据详情
+				detail: {
+					id: 0
+				},
+				// 商品标题
+				title: '',
+				// 倒计时
+				count: 0,
+				// 加入购物车数量
+				buynumber: 1,
+				// 当前详情页表
+				detailTable: 'zhenduanjilu',
+				baseurl: '',
+				// 评论列表
+				dataList: [],
+				// 选座座位列表
+				numberList: []
+			},
+			methods: {
+				jump(url) {
+					jump(url)
+				},
+				isAuth(tablename, button) {
+					return isFrontAuth(tablename, button)
+				},
+				// 跨表
+				onAcrossTap(acrossTable,crossOptAudit,statusColumnName,tips,statusColumnValue){
+					localStorage.setItem('crossTable',`zhenduanjilu`);
+					localStorage.setItem('crossObj', JSON.stringify(this.detail));
+					localStorage.setItem('statusColumnName',statusColumnName);
+					localStorage.setItem('statusColumnValue',statusColumnValue);
+					localStorage.setItem('tips',tips);
+
+					if(statusColumnName!=''&&!statusColumnName.startsWith("[")) {
+						var obj = JSON.parse(localStorage.getItem('crossObj'));
+						for (var o in obj){
+							if(o==statusColumnName && obj[o]==statusColumnValue){
+								layer.msg(tips, {
+									time: 2000,
+									icon: 5
+								});
+								return
+							}
+						}
+					}
+
+					jump(`../${acrossTable}/add.html?corss=true`);
+				}
+			}
+		})
+
+		layui.use(['layer', 'form', 'element', 'carousel', 'http', 'jquery', 'laypage'], function() {
+			var layer = layui.layer;
+			var element = layui.element;
+			var form = layui.form;
+			var carousel = layui.carousel;
+			var http = layui.http;
+			var jquery = layui.jquery;
+			var laypage = layui.laypage;
+
+			var limit = 10;
+
+			// 数据ID
+			var id = http.getParam('id');
+			vue.detail.id = id;
+			vue.baseurl = http.baseurl;
+
+			// 商品信息
+			http.request(`${vue.detailTable}/detail/` + id, 'get', {}, function(res) {
+				// 详情信息
+				vue.detail = res.data;
+				
+				// 处理诊断内容中的图片
+				if (vue.detail.zhenduanneirong) {
+					// 将图片路径转换为完整路径
+					vue.detail.zhenduanneirong = vue.detail.zhenduanneirong.replace(/src="([^"]*)"/g, function(match, p1) {
+						// 如果已经是完整路径，则直接使用
+						if (p1.startsWith('http') || p1.startsWith('/')) {
+							return `src="${p1}"`;
+						}
+						// 如果已经包含upload前缀，则直接使用
+						if (p1.startsWith('upload/')) {
+							return `src="${vue.baseurl}/${p1}"`;
+						}
+						// 否则添加upload前缀
+						return `src="${vue.baseurl}/upload/${p1}"`;
+					});
+				}
+				
+				// 获取医生头像
+				if (vue.detail.yishengzhanghao) {
+					// 获取医生信息
+					http.request('yisheng/list', 'get', {
+						page: 1,
+						limit: 1,
+						yishengzhanghao: vue.detail.yishengzhanghao
+					}, function(res) {
+						if (res.data && res.data.list && res.data.list.length > 0) {
+							const doctor = res.data.list[0];
+							if (doctor.touxiang) {
+								// 处理头像路径
+								let imgList = doctor.touxiang.split(",");
+								vue.swiperList = imgList.map(item => {
+									if (item.startsWith('http') || item.startsWith('/')) {
+										return item;
+									}
+									if (item.startsWith('upload/')) {
+										return item;
+									}
+									return 'upload/' + item;
+								});
+							} else {
+								vue.swiperList = ['img/default-avatar.jpg'];
+							}
+						} else {
+							vue.swiperList = ['img/default-avatar.jpg'];
+						}
+						
+						// 初始化轮播图
+						vue.$nextTick(() => {
+							carousel.render({
+								elem: '#swiper',
+								width: '100%',
+								height: '400px',
+								arrow: 'hover',
+								anim: 'fade',
+								autoplay: 'true',
+								interval: '3000',
+								indicator: 'inside',
+								autoplay: true
+							});
+						});
+					});
+				} else {
+					vue.swiperList = ['img/default-avatar.jpg'];
+				}
+			});
+		});
+	</script>
+	</body>
+</html>

@@ -1,0 +1,85 @@
+@startuml 预约管理时序图
+
+' 设置样式
+skinparam backgroundColor white
+skinparam handwritten false
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam sequence {
+    ArrowColor black
+    ParticipantBorderColor black
+    ParticipantBackgroundColor white
+}
+
+' 定义参与者
+actor 患者 as patient
+actor 医生 as doctor
+participant "前端界面" as front
+participant "AppointmentController" as controller
+participant "AppointmentService" as service
+participant "AppointmentDao" as dao
+database "数据库" as db
+
+' 查看排班流程
+== 查看排班 ==
+patient -> front: 选择科室和日期
+front -> controller: 获取排班信息
+controller -> service: getScheduleList(department, date)
+service -> dao: findByDepartmentAndDate(department, date)
+dao -> db: 查询排班数据
+db --> dao: 返回排班信息
+dao --> service: 返回排班信息
+service --> controller: 返回排班信息
+controller --> front: 返回排班信息
+front --> patient: 显示排班信息
+
+' 预约挂号流程
+== 预约挂号 ==
+patient -> front: 选择医生和时间
+front -> controller: 提交预约请求
+controller -> service: createAppointment(appointmentInfo)
+service -> dao: checkTimeSlot(doctorId, time)
+dao -> db: 查询预约数据
+db --> dao: 返回预约信息
+dao --> service: 返回预约信息
+service -> service: 检查时间是否冲突
+service -> dao: save(appointmentInfo)
+dao -> db: 插入预约数据
+db --> dao: 返回结果
+dao --> service: 返回结果
+service --> controller: 返回结果
+controller --> front: 返回预约结果
+front --> patient: 显示预约结果
+
+' 取消预约流程
+== 取消预约 ==
+patient -> front: 选择要取消的预约
+front -> controller: 提交取消请求
+controller -> service: cancelAppointment(appointmentId)
+service -> dao: findById(appointmentId)
+dao -> db: 查询预约数据
+db --> dao: 返回预约信息
+dao --> service: 返回预约信息
+service -> service: 检查是否可以取消
+service -> dao: updateStatus(appointmentId, CANCELLED)
+dao -> db: 更新预约状态
+db --> dao: 返回结果
+dao --> service: 返回结果
+service --> controller: 返回结果
+controller --> front: 返回取消结果
+front --> patient: 显示取消结果
+
+' 医生查看预约流程
+== 查看预约 ==
+doctor -> front: 查看今日预约
+front -> controller: 获取预约列表
+controller -> service: getTodayAppointments(doctorId)
+service -> dao: findByDoctorIdAndDate(doctorId, today)
+dao -> db: 查询预约数据
+db --> dao: 返回预约信息
+dao --> service: 返回预约信息
+service --> controller: 返回预约信息
+controller --> front: 返回预约信息
+front --> doctor: 显示预约列表
+
+@enduml 

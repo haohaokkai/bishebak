@@ -1,0 +1,285 @@
+<!-- 首页 -->
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<title>公告详情</title>
+	<link rel="stylesheet" href="../../layui/css/layui.css">
+	<!-- 样式 -->
+	<link rel="stylesheet" href="../../css/style.css" />
+	<!-- 主题（主要颜色设置） -->
+	<link rel="stylesheet" href="../../css/theme.css" />
+	<!-- 通用的css -->
+	<link rel="stylesheet" href="../../css/common.css" />
+</head>
+<style>
+	:root {
+		--primary-color: #409EFF;
+		--secondary-color: #67C23A;
+		--background-color: #f5f7fa;
+		--text-color: #303133;
+		--border-color: #DCDFE6;
+		--hover-color: #ecf5ff;
+		--card-shadow: 0 2px 12px 0 rgba(0,0,0,0.1);
+		--card-hover-shadow: 0 4px 16px 0 rgba(0,0,0,0.2);
+	}
+
+	body {
+		background-color: var(--background-color);
+		color: var(--text-color);
+		font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+		background-image: url('../../img/login-bg.jpg');
+		background-size: cover;
+		background-attachment: fixed;
+		background-position: center;
+		margin: 0;
+		padding: 0;
+	}
+
+	.modern-container {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 20px;
+	}
+
+	.modern-breadcrumb {
+		background: rgba(255, 255, 255, 0.9);
+		padding: 15px 20px;
+		border-radius: 8px;
+		box-shadow: var(--card-shadow);
+		margin-bottom: 20px;
+		backdrop-filter: blur(10px);
+	}
+
+	.modern-breadcrumb a {
+		color: var(--primary-color);
+		text-decoration: none;
+		transition: all 0.3s;
+	}
+
+	.modern-breadcrumb a:hover {
+		color: #66b1ff;
+	}
+
+	.modern-breadcrumb cite {
+		color: var(--text-color);
+		font-style: normal;
+	}
+
+	.modern-detail-card {
+		background: rgba(255, 255, 255, 0.9);
+		border-radius: 8px;
+		box-shadow: var(--card-shadow);
+		margin-bottom: 20px;
+		overflow: hidden;
+		backdrop-filter: blur(5px);
+	}
+
+	.modern-detail-header {
+		padding: 20px;
+		border-bottom: 1px solid var(--border-color);
+	}
+
+	.modern-detail-title {
+		font-size: 24px;
+		color: var(--text-color);
+		margin: 0;
+		padding-bottom: 10px;
+	}
+
+	.modern-detail-meta {
+		display: flex;
+		align-items: center;
+		color: #909399;
+		font-size: 14px;
+		margin-top: 10px;
+	}
+
+	.modern-detail-meta i {
+		margin-right: 5px;
+	}
+
+	.modern-detail-content {
+		padding: 20px;
+	}
+
+	.modern-detail-image {
+		width: 100%;
+		max-height: 400px;
+		object-fit: contain;
+		border-radius: 4px;
+		margin-bottom: 20px;
+		background-color: rgba(255, 255, 255, 0.5);
+	}
+
+	.modern-detail-text {
+		line-height: 1.8;
+		color: #606266;
+	}
+
+	.modern-tabs {
+		background: rgba(255, 255, 255, 0.9);
+		border-radius: 8px;
+		box-shadow: var(--card-shadow);
+		overflow: hidden;
+		backdrop-filter: blur(5px);
+	}
+
+	.layui-tab-title {
+		background-color: rgba(64, 158, 255, 0.1) !important;
+		border-bottom: 1px solid var(--border-color) !important;
+	}
+
+	.layui-tab-title li {
+		color: var(--text-color) !important;
+		transition: all 0.3s;
+	}
+
+	.layui-tab-title .layui-this {
+		color: var(--primary-color) !important;
+		background-color: white !important;
+	}
+
+	.layui-tab-title .layui-this:after {
+		border-bottom-color: var(--primary-color) !important;
+	}
+
+	.layui-tab-content {
+		padding: 20px;
+	}
+
+	.layui-carousel {
+		border-radius: 8px;
+		overflow: hidden;
+	}
+
+	.layui-carousel-ind li {
+		background-color: rgba(255, 255, 255, 0.8) !important;
+		border-radius: 50% !important;
+		width: 10px !important;
+		height: 10px !important;
+	}
+
+	.layui-carousel-ind li.layui-this {
+		background-color: var(--primary-color) !important;
+	}
+
+	@media (max-width: 768px) {
+		.modern-container {
+			padding: 10px;
+		}
+
+		.modern-detail-title {
+			font-size: 20px;
+		}
+	}
+</style>
+<body>
+
+	<div id="app">
+		<div class="modern-container">
+			<div class="modern-breadcrumb">
+				<span class="layui-breadcrumb">
+					<a href="../home/home.html">首页</a>
+					<a><cite>{{title}}</cite></a>
+				</span>
+			</div>
+
+			<div class="modern-detail-card">
+				<div class="modern-detail-header">
+					<h1 class="modern-detail-title">{{title}}</h1>
+					<div class="modern-detail-meta">
+						<i class="layui-icon layui-icon-time"></i>
+						<span>发布时间：{{detail.fabushijian}}</span>
+					</div>
+				</div>
+				
+				<div class="modern-detail-content">
+					<div v-if="swiperList.length" class="layui-carousel" id="swiper">
+						<div carousel-item>
+							<div v-for="(item,index) in swiperList" :key="index">
+								<img class="modern-detail-image" :src="baseurl+item" />
+							</div>
+						</div>
+					</div>
+					
+					<div class="modern-detail-text" v-html="detail.gonggaoneirong"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script src="../../layui/layui.js"></script>
+	<script src="../../js/vue.js"></script>
+	<!-- 组件配置信息 -->
+	<script src="../../js/config.js"></script>
+	<!-- 扩展插件配置信息 -->
+	<script src="../../modules/config.js"></script>
+	<!-- 工具方法 -->
+	<script src="../../js/utils.js"></script>
+
+	<script>
+		var vue = new Vue({
+			el: '#app',
+			data: {
+				// 轮播图
+				swiperList: [],
+				// 数据详情
+				detail: {
+					id: 0
+				},
+				// 商品标题
+				title: '',
+				baseurl: '',
+				// 当前详情页表
+				detailTable: 'gonggaoxinxi'
+			},
+			methods: {
+				jump(url) {
+					jump(url)
+				},
+				isAuth(tablename, button) {
+					return isFrontAuth(tablename, button)
+				}
+			}
+		})
+
+		layui.use(['layer', 'element', 'carousel', 'http', 'jquery'], function() {
+			var layer = layui.layer;
+			var element = layui.element;
+			var carousel = layui.carousel;
+			var http = layui.http;
+			var jquery = layui.jquery;
+
+			// 数据ID
+			var id = http.getParam('id');
+			vue.detail.id = id;
+			vue.baseurl = http.baseurl;
+
+			// 商品信息
+			http.request(`gonggaoxinxi/detail/` + id, 'get', {}, function(res) {
+				// 详情信息
+				vue.detail = res.data
+				vue.title = vue.detail.biaoti;
+				// 轮播图片
+				vue.swiperList = vue.detail.fengmian ? vue.detail.fengmian.split(",") : [];
+				
+				// 轮播图
+				vue.$nextTick(() => {
+				  carousel.render({
+					elem: '#swiper',
+					width: '100%',
+					height: '500px',
+					arrow: 'hover',
+					anim: 'fade',
+					autoplay: 'true',
+					interval: '3000',
+					indicator: 'inside'
+				  });
+				})
+			});
+		});
+	</script>
+</body>
+</html>

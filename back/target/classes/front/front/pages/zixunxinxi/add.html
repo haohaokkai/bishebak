@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<title>注册</title>
+		<!-- bootstrap样式，地图插件使用 -->
+		<link rel="stylesheet" href="../../css/bootstrap.min.css" />
+		<link rel="stylesheet" href="../../layui/css/layui.css">
+		<!-- 样式 -->
+		<link rel="stylesheet" href="../../css/style.css" />
+		<!-- 主题（主要颜色设置） -->
+		<link rel="stylesheet" href="../../css/theme.css" />
+		<!-- 通用的css -->
+		<link rel="stylesheet" href="../../css/common.css" />
+	</head>
+	<style>
+		html::after {
+			position: fixed;
+			top: 0;
+			right: 0;
+			left: 0;
+			bottom: 0;
+			content: '';
+			display: block;
+			background-attachment: fixed;
+			background-size: cover;
+			background-position: center;
+			background-image: url('../../img/login-bg.jpg');
+			z-index: -1;
+		}
+		
+		/* 现代化样式 */
+		.modern-form-container {
+			background-color: #fff;
+			border-radius: 12px;
+			box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+			padding: 30px;
+			margin: 30px auto;
+			max-width: 800px;
+			transition: all 0.3s ease;
+		}
+		
+		.modern-form-container:hover {
+			box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+		}
+		
+		.modern-form-title {
+			font-size: 24px;
+			font-weight: 600;
+			color: #333;
+			margin-bottom: 25px;
+			padding-bottom: 15px;
+			border-bottom: 1px solid #eee;
+			text-align: center;
+		}
+		
+		.modern-form-item {
+			margin-bottom: 20px;
+			display: flex;
+			align-items: center;
+		}
+		
+		.modern-form-label {
+			width: 120px;
+			font-weight: 600;
+			color: #555;
+			text-align: right;
+			padding-right: 15px;
+			flex-shrink: 0;
+		}
+		
+		.modern-form-input {
+			flex: 1;
+		}
+		
+		.modern-form-input input, 
+		.modern-form-input textarea {
+			width: 100%;
+			padding: 10px 15px;
+			border: 1px solid #ddd;
+			border-radius: 8px;
+			font-size: 14px;
+			transition: all 0.3s ease;
+		}
+		
+		.modern-form-input input:focus, 
+		.modern-form-input textarea:focus {
+			border-color: #1f93ff;
+			box-shadow: 0 0 0 2px rgba(31, 147, 255, 0.2);
+			outline: none;
+		}
+		
+		.modern-form-buttons {
+			display: flex;
+			justify-content: center;
+			margin-top: 30px;
+		}
+		
+		.modern-btn {
+			padding: 10px 25px;
+			border-radius: 8px;
+			font-size: 16px;
+			font-weight: 500;
+			cursor: pointer;
+			transition: all 0.3s ease;
+			margin: 0 10px;
+		}
+		
+		.modern-btn-primary {
+			background-color: #1f93ff;
+			color: #fff;
+			border: none;
+		}
+		
+		.modern-btn-primary:hover {
+			background-color: #0066cc;
+			transform: translateY(-2px);
+		}
+		
+		.modern-btn-default {
+			background-color: #fff;
+			color: #333;
+			border: 1px solid #ddd;
+		}
+		
+		.modern-btn-default:hover {
+			background-color: #f5f5f5;
+			transform: translateY(-2px);
+		}
+		
+		.modern-form-textarea {
+			min-height: 200px;
+			resize: vertical;
+		}
+		
+		/* 添加固定提示框的样式 */
+		.layui-layer {
+			position: fixed !important;
+			top: 50% !important;
+			left: 50% !important;
+			transform: translate(-50%, -50%) !important;
+			z-index: 999999 !important;
+		}
+
+		.layui-layer-shade {
+			position: fixed !important;
+			z-index: 999998 !important;
+		}
+	</style>
+	<body style="background: #EEEEEE; ">
+
+		<div id="app">
+			<div class="modern-form-container">
+				<h2 class="modern-form-title">提交咨询</h2>
+				
+				<form class="layui-form layui-form-pane add" lay-filter="myForm">
+					<div class="modern-form-item">
+						<label class="modern-form-label">医生账号：</label>
+						<div class="modern-form-input">
+							<input v-model="detail.yishengzhanghao" type="text" :readonly="ro.yishengzhanghao" name="yishengzhanghao" id="yishengzhanghao" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					
+					<div class="modern-form-item">
+						<label class="modern-form-label">医生姓名：</label>
+						<div class="modern-form-input">
+							<input v-model="detail.yishengxingming" type="text" :readonly="ro.yishengxingming" name="yishengxingming" id="yishengxingming" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					
+					<div class="modern-form-item">
+						<label class="modern-form-label">医生职位：</label>
+						<div class="modern-form-input">
+							<input v-model="detail.yishengzhiwei" type="text" :readonly="ro.yishengzhiwei" name="yishengzhiwei" id="yishengzhiwei" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					
+					<div class="modern-form-item">
+						<label class="modern-form-label">咨询时间：</label>
+						<div class="modern-form-input">
+							<input type="text" name="zixunshijian" id="zixunshijian" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					
+					<div class="modern-form-item">
+						<label class="modern-form-label">用户账号：</label>
+						<div class="modern-form-input">
+							<input v-model="detail.yonghuzhanghao" type="text" :readonly="ro.yonghuzhanghao" name="yonghuzhanghao" id="yonghuzhanghao" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					
+					<div class="modern-form-item">
+						<label class="modern-form-label">用户姓名：</label>
+						<div class="modern-form-input">
+							<input v-model="detail.yonghuxingming" type="text" :readonly="ro.yonghuxingming" name="yonghuxingming" id="yonghuxingming" autocomplete="off" class="layui-input">
+						</div>
+					</div>
+
+					<div class="modern-form-item">
+						<label class="modern-form-label">资询内容：</label>
+						<div class="modern-form-input">
+							<textarea name="zixunneirong" id="zixunneirong" class="modern-form-textarea" placeholder="请输入资询内容"></textarea>
+						</div>
+					</div>
+
+					<div class="modern-form-buttons">
+						<button class="modern-btn modern-btn-primary" lay-submit lay-filter="*">提交</button>
+						<button type="reset" class="modern-btn modern-btn-default">重置</button>
+					</div>
+				</form>
+			</div>
+		</div>
+
+		<script src="../../layui/layui.js"></script>
+		<script src="../../js/vue.js"></script>
+		<!-- 组件配置信息 -->
+		<script src="../../js/config.js"></script>
+		<!-- 扩展插件配置信息 -->
+		<script src="../../modules/config.js"></script>
+		<!-- 工具方法 -->
+		<script src="../../js/utils.js"></script>
+		<!-- 校验格式工具类 -->
+		<script src="../../js/validate.js"></script>
+		<!-- 地图 -->
+		<script type="text/javascript" src="../../js/jquery.js"></script>
+		<script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=ca04cee7ac952691aa67a131e6f0cee0"></script>
+		<script type="text/javascript" src="../../js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="../../js/bootstrap.AMapPositionPicker.js"></script>
+
+		<script>
+			var jquery = $;
+			
+			var vue = new Vue({
+				el: '#app',
+				data: {
+					dataList: [],
+					baseurl:'',
+      					ro:{
+				        yishengzhanghao : false,
+				        yishengxingming : false,
+				        yishengzhiwei : false,
+				        zixunneirong : false,
+				        zixunshijian : false,
+				        yonghuzhanghao : false,
+				        yonghuxingming : false,
+				        sfsh : false,
+				        shhf : false,
+              				},
+                    detail: {
+                        yishengzhanghao: '',
+                        yishengxingming: '',
+                        yishengzhiwei: '',
+                        zixunneirong: '',
+                        zixunshijian: '',
+                        yonghuzhanghao: '',
+                        yonghuxingming: '',
+                        sfsh: '',
+                        shhf: '',
+                    },
+					centerMenu: centerMenu
+				},
+				updated: function() {
+					layui.form.render('select', 'myForm');
+				},
+                computed: {
+
+
+
+                },
+				methods: {
+					jump(url) {
+						jump(url)
+					}
+				}
+			})
+
+
+			layui.use(['layer', 'element', 'http', 'jquery', 'form', 'upload', 'laydate','tinymce'], function() {
+				var layer = layui.layer;
+				var element = layui.element;
+				var http = layui.http;
+				var jquery = layui.jquery;
+				var form = layui.form;
+				var upload = layui.upload;
+				var laydate = layui.laydate;
+                var tinymce = layui.tinymce;
+				vue.baseurl = http.baseurl;
+
+                var edit = tinymce.render({
+                    elem: "#zixunneirong",
+                    height: 600,
+                    images_upload_handler: function(blobInfo, succFun, failFun) {
+                        var xhr, formData;
+                        var file = blobInfo.blob(); //转化为易于理解的file对象
+                        xhr = new XMLHttpRequest();
+                        xhr.withCredentials = false;
+                        xhr.open('POST', http.baseurl + 'file/upload');
+                        xhr.setRequestHeader("Token", localStorage.getItem('Token')); //设置请求头
+                        xhr.onload = function() {
+                            var json;
+                            if (xhr.status != 200) {
+                                failFun('HTTP Error: ' + xhr.status);
+                                return;
+                            }
+                            json = JSON.parse(xhr.responseText);
+                            if (!json || typeof json.file != 'string') {
+                                failFun('Invalid JSON: ' + xhr.responseText);
+                                return;
+                            }
+                            succFun(http.baseurl + 'upload/' + json.file);
+                        };
+                        formData = new FormData();
+                        formData.append('file', file, file.name); //此处与源文档不一样
+                        xhr.send(formData);
+                    }
+                }, (opt) => {
+
+                });
+				jquery('#zixunshijian').val(getCurDateTime());
+				laydate.render({
+					elem: '#zixunshijian',
+					type: 'datetime'
+				});
+				
+                // session独取
+				let table = localStorage.getItem("userTable");
+
+
+				http.request(`${table}/session`, 'get', {}, function(data) {
+					// 表单赋值 从服务器获取当前用户的会话信息，如果获取到信息，则将用户的账号和姓名填充到表单中，并将对应输入框设置为只读。
+					//form.val("myForm", data.data);
+					data = data.data
+					for (var key in data){
+					if(key=='yonghuzhanghao'){
+						vue.detail[`yonghuzhanghao`] = data[`${key}`]
+						vue.ro.yonghuzhanghao = true;
+						continue;
+                    }
+					if(key=='yonghuxingming'){
+						vue.detail[`yonghuxingming`] = data[`${key}`]
+						vue.ro.yonghuxingming = true;
+						continue;
+                    }
+                                        }
+				});
+
+                // 跨表
+                if(http.getParam('corss')){
+					var obj = JSON.parse(localStorage.getItem('crossObj'));
+					for (var o in obj){
+					if(o=='yishengzhanghao'){
+          	                                vue.detail[o] = obj[o];
+						vue.ro.yishengzhanghao = true;
+						continue;
+                                        }
+					if(o=='yishengxingming'){
+          	                                vue.detail[o] = obj[o];
+						vue.ro.yishengxingming = true;
+						continue;
+                                        }
+					if(o=='yishengzhiwei'){
+          	                                vue.detail[o] = obj[o];
+						vue.ro.yishengzhiwei = true;
+						continue;
+                                        }
+					if(o=='zixunneirong'){
+          	                                vue.detail[o] = obj[o];
+						vue.ro.zixunneirong = true;
+						continue;
+                                        }
+					if(o=='zixunshijian'){
+          	                                vue.detail[o] = obj[o];
+						vue.ro.zixunshijian = true;
+						jquery('#zixunshijian').val(obj[o]);						
+						continue;
+                                        }
+					if(o=='yonghuzhanghao'){
+          	                                vue.detail[o] = obj[o];
+						vue.ro.yonghuzhanghao = true;
+						continue;
+                                        }
+					if(o=='yonghuxingming'){
+          	                                vue.detail[o] = obj[o];
+						vue.ro.yonghuxingming = true;
+						continue;
+                                        }
+                                        }
+				}
+				
+
+		// 提交
+		form.on('submit(*)', function(data) {
+			data = data.field;
+                    // 数据校验
+			var zixunneirong = tinymce.get('#zixunneirong').getContent()
+			data.zixunneirong = zixunneirong;
+
+			// 检查登录状态
+			if(!localStorage.getItem('Token')) {
+				layer.msg('请先登录', {
+					time: 2000,
+					icon: 5,
+					shade: 0.3
+				}, function() {
+					window.location.href = '../../login.html';
+				});
+				return false;
+			}
+
+			// 提交数据
+			http.requestJson('zixunxinxi' + '/add', 'post', data, function(res) {
+				if(res.code == 0) {
+					// 滚动到页面顶部
+					window.scrollTo({
+						top: 0,
+						behavior: 'smooth'
+					});
+					
+					layer.msg('咨询提交成功！', {
+						time: 2000,
+						icon: 1,
+						shade: 0.3,
+						anim: 6
+					}, function() {
+						// 返回上一页
+						window.history.back();
+					});
+				} else if(res.code == 401) {
+					// 未登录状态
+					layer.msg('登录已过期，请重新登录', {
+						time: 2000,
+						icon: 5,
+						shade: 0.3
+					}, function() {
+						localStorage.removeItem('Token');
+						window.location.href = '../../login.html';
+					});
+				} else {
+					layer.msg(res.msg || '提交失败', {
+						time: 2000,
+						icon: 5,
+						shade: 0.3
+					});
+				}
+			});
+			return false;
+		});
+
+		});
+		</script>
+	</body>
+</html>

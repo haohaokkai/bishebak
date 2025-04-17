@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<title>咨询详情</title>
+	<link rel="stylesheet" href="../../layui/css/layui.css">
+	<!-- 样式 -->
+	<link rel="stylesheet" href="../../css/style.css" />
+	<!-- 主题（主要颜色设置） -->
+	<link rel="stylesheet" href="../../css/theme.css" />
+	<!-- 通用的css -->
+	<link rel="stylesheet" href="../../css/common.css" />
+</head>
+<style>
+    :root {
+        --primary-color: #409EFF;
+        --secondary-color: #67C23A;
+        --background-color: #f5f7fa;
+        --text-color: #303133;
+        --border-color: #DCDFE6;
+        --hover-color: #ecf5ff;
+        --card-shadow: 0 2px 12px 0 rgba(0,0,0,0.1);
+        --card-hover-shadow: 0 4px 16px 0 rgba(0,0,0,0.2);
+    }
+
+    body {
+        background-color: var(--background-color);
+        color: var(--text-color);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        background-image: url('../../img/login-bg.jpg');
+        background-size: cover;
+        background-attachment: fixed;
+        background-position: center;
+        margin: 0;
+        padding: 0;
+    }
+
+    .modern-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .modern-breadcrumb {
+        background: rgba(255, 255, 255, 0.9);
+        padding: 15px 20px;
+        border-radius: 8px;
+        box-shadow: var(--card-shadow);
+        margin-bottom: 20px;
+        backdrop-filter: blur(10px);
+    }
+
+    .modern-breadcrumb .layui-breadcrumb {
+        visibility: visible;
+    }
+
+    .modern-breadcrumb .layui-breadcrumb a {
+        color: var(--primary-color);
+        text-decoration: none;
+    }
+
+    .modern-breadcrumb .layui-breadcrumb cite {
+        color: var(--text-color);
+    }
+
+    .modern-detail-card {
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 8px;
+        box-shadow: var(--card-shadow);
+        overflow: hidden;
+        backdrop-filter: blur(10px);
+        margin-bottom: 20px;
+    }
+
+    .modern-detail-header {
+        padding: 20px;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .modern-detail-title {
+        font-size: 24px;
+        font-weight: bold;
+        color: var(--text-color);
+        margin: 0;
+    }
+
+    .modern-detail-content {
+        padding: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 30px;
+    }
+
+    .modern-detail-image {
+        width: 100%;
+        height: 300px;
+        object-fit: contain;
+        background-color: rgba(255, 255, 255, 0.5);
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+
+    .modern-detail-info {
+        flex: 1;
+        min-width: 300px;
+    }
+
+    .modern-detail-item {
+        display: flex;
+        margin-bottom: 15px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .modern-detail-label {
+        width: 100px;
+        font-weight: bold;
+        color: var(--text-color);
+    }
+
+    .modern-detail-value {
+        flex: 1;
+        color: var(--text-color);
+    }
+
+    .modern-detail-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    .modern-btn {
+        padding: 8px 20px;
+        border-radius: 4px;
+        border: none;
+        cursor: pointer;
+        font-size: 14px;
+        transition: all 0.3s;
+    }
+
+    .modern-btn-primary {
+        background-color: var(--primary-color);
+        color: white;
+    }
+
+    .modern-btn-primary:hover {
+        background-color: #66b1ff;
+    }
+
+    .modern-btn-danger {
+        background-color: #F56C6C;
+        color: white;
+    }
+
+    .modern-btn-danger:hover {
+        background-color: #f78989;
+    }
+
+    .modern-tab {
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 8px;
+        box-shadow: var(--card-shadow);
+        overflow: hidden;
+        backdrop-filter: blur(10px);
+    }
+
+    .modern-tab .layui-tab-title {
+        background-color: rgba(255, 255, 255, 0.8);
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .modern-tab .layui-tab-title li {
+        color: var(--text-color);
+        font-size: 16px;
+    }
+
+    .modern-tab .layui-tab-title .layui-this {
+        color: var(--primary-color);
+    }
+
+    .modern-tab .layui-tab-title .layui-this:after {
+        border-bottom-color: var(--primary-color);
+    }
+
+    .modern-tab .layui-tab-content {
+        padding: 20px;
+    }
+
+    .modern-tab .layui-tab-item {
+        color: var(--text-color);
+        line-height: 1.8;
+    }
+
+    .modern-carousel {
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: var(--card-shadow);
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto;
+        flex: 0 0 300px;
+    }
+
+    .modern-carousel .layui-carousel {
+        width: 100% !important;
+    }
+
+    .modern-carousel .layui-carousel-item {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: rgba(255, 255, 255, 0.5);
+    }
+
+    .modern-carousel .layui-carousel-item img {
+        max-width: 100%;
+        max-height: 300px;
+        object-fit: contain;
+    }
+
+    .modern-carousel .layui-carousel-ind li {
+        background-color: rgba(255, 255, 255, 0.8) !important;
+        border-radius: 50% !important;
+        width: 10px !important;
+        height: 10px !important;
+    }
+
+    .modern-carousel .layui-carousel-ind li.layui-this {
+        background-color: var(--primary-color) !important;
+    }
+
+    .modern-content {
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 8px;
+        box-shadow: var(--card-shadow);
+        padding: 20px;
+        margin-top: 20px;
+        backdrop-filter: blur(10px);
+    }
+
+    .modern-content img {
+        max-width: 100%;
+        border-radius: 4px;
+        margin: 10px 0;
+    }
+
+    .modern-content p {
+        margin: 10px 0;
+        line-height: 1.8;
+    }
+
+    .modern-content pre {
+        background-color: #f5f5f5;
+        padding: 15px;
+        border-radius: 4px;
+        overflow-x: auto;
+        margin: 10px 0;
+    }
+
+    .modern-content blockquote {
+        border-left: 4px solid var(--primary-color);
+        padding-left: 15px;
+        margin: 10px 0;
+        color: #666;
+    }
+
+    .modern-content ul, .modern-content ol {
+        padding-left: 20px;
+        margin: 10px 0;
+    }
+
+    .modern-content table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 10px 0;
+    }
+
+    .modern-content table th, .modern-content table td {
+        border: 1px solid var(--border-color);
+        padding: 8px;
+        text-align: left;
+    }
+
+    .modern-content table th {
+        background-color: #f5f7fa;
+    }
+
+    @media (max-width: 768px) {
+        .modern-container {
+            padding: 10px;
+        }
+
+        .modern-detail-content {
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .modern-detail-image {
+            height: 300px;
+        }
+
+        .modern-detail-actions {
+            flex-direction: column;
+        }
+
+        .modern-btn {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+    }
+</style>
+<body>
+
+	<div id="app">
+        <div class="modern-container">
+            <div class="modern-breadcrumb">
+                <span class="layui-breadcrumb">
+                    <a href="../home/home.html">首页</a>
+                    <a><cite>{{title}}</cite></a>
+                </span>
+            </div>
+
+            <div class="modern-detail-card">
+                <div class="modern-detail-header">
+                    <h1 class="modern-detail-title">{{title}}</h1>
+                </div>
+                <div class="modern-detail-content">
+                    <div class="modern-carousel">
+                        <div class="layui-carousel" id="swiper">
+                            <div carousel-item>
+                                <div v-if="swiperList.length" v-for="(item,index) in swiperList" :key="index">
+                                    <img class="modern-detail-image" :src="baseurl + '/' + item" />
+                                </div>
+                                <div v-if="!swiperList.length">
+                                    <img class="modern-detail-image" src="../../img/default-avatar.jpg" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modern-detail-info">
+                        <div class="modern-detail-item">
+                            <div class="modern-detail-label">医生账号：</div>
+                            <div class="modern-detail-value">{{detail.yishengzhanghao}}</div>
+                        </div>
+                        <div class="modern-detail-item">
+                            <div class="modern-detail-label">医生姓名：</div>
+                            <div class="modern-detail-value">{{detail.yishengxingming}}</div>
+                        </div>
+                        <div class="modern-detail-item">
+                            <div class="modern-detail-label">医生职位：</div>
+                            <div class="modern-detail-value">{{detail.yishengzhiwei}}</div>
+                        </div>
+                        <div class="modern-detail-item">
+                            <div class="modern-detail-label">咨询时间：</div>
+                            <div class="modern-detail-value">{{detail.zixunshijian}}</div>
+                        </div>
+                        <div class="modern-detail-item">
+                            <div class="modern-detail-label">用户账号：</div>
+                            <div class="modern-detail-value">{{detail.yonghuzhanghao}}</div>
+                        </div>
+                        <div class="modern-detail-item">
+                            <div class="modern-detail-label">用户姓名：</div>
+                            <div class="modern-detail-value">{{detail.yonghuxingming}}</div>
+                        </div>
+                        <div class="modern-detail-actions">
+                            <button v-if="isAuth('zixunxinxi','咨询')" @click="onAcrossTap('zixunxinxi','是','','')" type="button" class="modern-btn modern-btn-danger">
+                                咨询记录
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modern-content">
+                <h2>咨询内容</h2>
+                <div v-html="detail.zixunneirong"></div>
+            </div>
+        </div>
+	</div>
+
+	<script src="../../layui/layui.js"></script>
+	<script src="../../js/vue.js"></script>
+	<!-- 组件配置信息 -->
+	<script src="../../js/config.js"></script>
+	<!-- 扩展插件配置信息 -->
+	<script src="../../modules/config.js"></script>
+	<!-- 工具方法 -->
+	<script src="../../js/utils.js"></script>
+
+	<script>
+		var vue = new Vue({
+			el: '#app',
+			data: {
+				// 轮播图
+				swiperList: [],
+				// 数据详情
+				detail: {
+					id: 0
+				},
+				// 商品标题
+				title: '',
+				// 倒计时
+				count: 0,
+				// 加入购物车数量
+				buynumber: 1,
+				// 当前详情页表
+				detailTable: 'zixunxinxi',
+				baseurl: '',
+				// 评论列表
+				dataList: [],
+				// 选座座位列表
+				numberList: []
+			},
+			// 倒计时效果
+			computed: {
+				SecondToDate: function() {
+					var time = this.count;
+					if (null != time && "" != time) {
+						if (time > 60 && time < 60 * 60) {
+							time =
+								parseInt(time / 60.0) +
+								"分钟" +
+								parseInt((parseFloat(time / 60.0) - parseInt(time / 60.0)) * 60) +
+								"秒";
+						} else if (time >= 60 * 60 && time < 60 * 60 * 24) {
+							time =
+								parseInt(time / 3600.0) +
+								"小时" +
+								parseInt(
+									(parseFloat(time / 3600.0) - parseInt(time / 3600.0)) * 60
+								) +
+								"分钟" +
+								parseInt(
+									(parseFloat(
+											(parseFloat(time / 3600.0) - parseInt(time / 3600.0)) * 60
+										) -
+										parseInt(
+											(parseFloat(time / 3600.0) - parseInt(time / 3600.0)) * 60
+										)) *
+									60
+								) +
+								"秒";
+						} else if (time >= 60 * 60 * 24) {
+							time =
+								parseInt(time / 3600.0 / 24) +
+								"天" +
+								parseInt(
+									(parseFloat(time / 3600.0 / 24) - parseInt(time / 3600.0 / 24)) *
+									24
+								) +
+								"小时" +
+								parseInt(
+									(parseFloat(time / 3600.0) - parseInt(time / 3600.0)) * 60
+								) +
+								"分钟" +
+								parseInt(
+									(parseFloat(
+											(parseFloat(time / 3600.0) - parseInt(time / 3600.0)) * 60
+										) -
+										parseInt(
+											(parseFloat(time / 3600.0) - parseInt(time / 3600.0)) * 60
+										)) *
+									60
+								) +
+								"秒";
+						} else {
+							time = parseInt(time) + "秒";
+						}
+					}
+					return time;
+				}
+			},
+			//  清除定时器
+			destroyed: function() {
+				window.clearInterval(this.inter);
+			},
+			methods: {
+				jump(url) {
+					jump(url)
+				},
+				isAuth(tablename, button) {
+					return isFrontAuth(tablename, button)
+				},
+				// 倒计时初始化
+				countDown() {
+					let reversetime = new Date(this.detail.reversetime).getTime()
+					let now = new Date().getTime();
+					let count = reversetime - now;
+					if (count > 0) {
+						this.count = count / 1000
+						var _this = this;
+						this.inter = window.setInterval(function() {
+							_this.count = _this.count - 1;
+							if (_this.count < 0) {
+								window.clearInterval(_this.inter);
+								layer.msg("活动已结束", {
+									time: 2000,
+									icon: 5
+								})
+							}
+						}, 1000);
+					}
+				},
+				
+				// 下载文件
+				downFile(url) {
+					var download = $("#download");
+					download.append(
+						"<a id=\"down\" href=\"aaaa.txt\" target=\"_blank\" download=\"aaaa.txt\" style=\"display:none\">下载该文件</a>");
+					console.log(download);
+					$("#down")[0].click();
+				},
+				// 跨表
+				onAcrossTap(acrossTable,crossOptAudit,statusColumnName,tips,statusColumnValue){
+					if(crossOptAudit=='是'&&this.detail.sfsh!='是') {
+						layer.msg('请审核通过后再操作', {
+							time: 2000,
+							icon: 3 
+						});
+						return
+					}
+					localStorage.setItem('crossTable',`zixunxinxi`);
+					localStorage.setItem('crossObj', JSON.stringify(this.detail));
+					localStorage.setItem('statusColumnName',statusColumnName);
+					localStorage.setItem('statusColumnValue',statusColumnValue);
+					localStorage.setItem('tips',tips);
+
+					if(statusColumnName!=''&&!statusColumnName.startsWith("[")) {
+						var obj = JSON.parse(localStorage.getItem('crossObj'));
+						for (var o in obj){
+							if(o==statusColumnName && obj[o]==statusColumnValue){
+								layer.msg(tips, {
+									time: 2000,
+									icon: 5
+								});
+								return
+							}
+						}
+					}
+
+					jump(`../${acrossTable}/add.html?corss=true`);
+				}
+			}
+		})
+
+		layui.use(['layer', 'form', 'element', 'carousel', 'http', 'jquery', 'laypage'], function() {
+			var layer = layui.layer;
+			var element = layui.element;
+			var form = layui.form;
+			var carousel = layui.carousel;
+			var http = layui.http;
+			var jquery = layui.jquery;
+			var laypage = layui.laypage;
+
+			var limit = 10;
+
+			// 数据ID
+			var id = http.getParam('id');
+			vue.detail.id = id;
+			vue.baseurl = http.baseurl;
+
+			// 商品信息
+			http.request(`${vue.detailTable}/detail/` + id, 'get', {}, function(res) {
+				// 详情信息
+				vue.detail = res.data;
+				vue.title = vue.detail.title || '咨询详情';
+				
+				// 处理医生头像
+				if (vue.detail.yishengzhanghao) {
+					// 获取医生信息
+					http.request('yisheng/list', 'get', {
+						page: 1,
+						limit: 1,
+						yishengzhanghao: vue.detail.yishengzhanghao
+					}, function(res) {
+						if (res.data && res.data.list && res.data.list.length > 0) {
+							const doctor = res.data.list[0];
+							if (doctor.touxiang) {
+								// 处理头像路径
+								let imgList = doctor.touxiang.split(",");
+								vue.swiperList = imgList.map(item => {
+									// 如果已经是完整路径，则直接使用
+									if (item.startsWith('http') || item.startsWith('/')) {
+										return item;
+									}
+									// 如果已经包含upload前缀，则直接使用
+									if (item.startsWith('upload/')) {
+										return item;
+									}
+									// 否则添加upload前缀
+									return 'upload/' + item;
+								});
+							} else {
+								vue.swiperList = ['img/default-avatar.jpg'];
+							}
+						} else {
+							vue.swiperList = ['img/default-avatar.jpg'];
+						}
+						
+						// 初始化轮播图
+						vue.$nextTick(() => {
+							carousel.render({
+								elem: '#swiper',
+								width: '100%',
+								height: '300px',
+								arrow: 'hover',
+								anim: 'fade',
+								autoplay: 'true',
+								interval: '3000',
+								indicator: 'inside',
+								autoplay: true
+							});
+						});
+					});
+				} else {
+					vue.swiperList = ['img/default-avatar.jpg'];
+				}
+				
+				console.log("咨询信息加载成功:", vue.detail);
+				console.log("医生头像列表:", vue.swiperList);
+			});
+		});
+	</script>
+	</body>
+</html>

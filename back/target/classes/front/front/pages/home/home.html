@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html>
+<!--首页-->
+<head lang="en">
+<meta charset="utf-8">
+<title>首页</title>
+<meta name="description" content="" />
+<meta name="keywords" content="" />
+<meta name="author" content="order by mobanxiu.cn" />
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="stylesheet" href="../../layui/css/layui.css">
+<link rel="stylesheet" href="../../css/swiper.min.css">
+<link rel="stylesheet" href="../../xznstatic/css/common.css"/>
+<link rel="stylesheet" href="../../xznstatic/css/style.css"/>
+<script src="../../xznstatic/js/jquery-1.11.3.min.js"></script>
+<script src="../../xznstatic/js/jquery.SuperSlide.2.1.1.js"></script>
+<style>
+:root {
+  --primary-color: #409EFF;
+  --secondary-color: #67C23A;
+  --text-color: #303133;
+  --border-color: #DCDFE6;
+  --background-color: #F5F7FA;
+  --card-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  --hover-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+body {
+  background: url('../../img/login-bg.jpg') no-repeat center center fixed;
+  background-size: cover;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  min-height: 100vh;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.8);
+  z-index: -1;
+}
+
+#app {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  position: relative;
+  z-index: 1;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 20px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.banner {
+  margin-bottom: 40px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--card-shadow);
+}
+
+#test1 {
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+#test1 .layui-carousel-ind {
+  bottom: 20px;
+}
+
+#test1 .layui-carousel-ind li {
+  width: 16px;
+  height: 10px;
+  border-radius: 5px;
+  background-color: rgba(255, 255, 255, 0.5);
+  margin: 0 5px;
+}
+
+#test1 .layui-carousel-ind li.layui-this {
+  width: 30px;
+  background-color: var(--primary-color);
+}
+
+.search-container {
+  display: none;
+}
+
+.section-title {
+  text-align: center;
+  margin: 50px 0 40px;
+  position: relative;
+}
+
+.section-title span {
+  display: inline-block;
+  font-size: 28px;
+  color: var(--text-color);
+  padding: 0 25px;
+  background: rgba(255, 255, 255, 0.9);
+  position: relative;
+  z-index: 1;
+  font-weight: 600;
+  letter-spacing: 1px;
+  border-radius: 8px;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 2px;
+  background: linear-gradient(to right, transparent, var(--primary-color), transparent);
+  z-index: 0;
+}
+
+.recommend {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 16px;
+  padding: 30px;
+  margin-bottom: 50px;
+  box-shadow: var(--card-shadow);
+}
+
+.recommend .list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 25px;
+  margin-top: 30px;
+}
+
+.recommend .list-item {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--card-shadow);
+  position: relative;
+}
+
+.recommend .list-item img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  display: block;
+}
+
+.recommend .list-item .name {
+  padding: 20px;
+  text-align: center;
+  color: var(--text-color);
+  font-size: 18px;
+  font-weight: 600;
+  position: relative;
+  z-index: 2;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.more-btn {
+  display: block;
+  width: 200px;
+  margin: 40px auto 0;
+  padding: 12px 25px;
+  background: transparent;
+  color: var(--primary-color);
+  border: 2px solid var(--primary-color);
+  border-radius: 8px;
+  text-align: center;
+  cursor: pointer;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.more-btn:hover {
+  background: var(--primary-color);
+  color: #fff;
+}
+
+@media (max-width: 768px) {
+  .recommend .list {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+  
+  .search-container {
+    flex-direction: column;
+    gap: 15px;
+    padding: 20px;
+  }
+  
+  .search-container input {
+    width: 100%;
+  }
+  
+  .search-container select,
+  .search-container button {
+    width: 100%;
+    margin: 0;
+  }
+  
+  .section-title span {
+    font-size: 24px;
+  }
+}
+</style>
+<body>
+  <div id="app">
+    <div class="banner">
+      <div class="layui-carousel" id="test1">
+        <div carousel-item>
+          <div v-for="(item,index) in swiperList" :key="index">
+            <img style="width: 100%;height: 100%;object-fit:cover;" :src="item.img" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="content">
+      <div class="section-title">
+        <span>公告信息</span>
+      </div>
+      <div class="recommend">
+        <div class="list">
+          <div v-for="(item,index) in gonggaoxinxiList" :key="index" @click="handleCardClick('gonggaoxinxi', item.id)" class="list-item">
+            <img :src="item.fengmian?baseurl+item.fengmian.split(',')[0]:''" alt="" />
+            <div class="name">{{item.biaoti}}</div>
+          </div>
+        </div>
+        <button class="more-btn" @click="handleMoreClick('gonggaoxinxi')">
+          查看更多 <i class="layui-icon layui-icon-next"></i>
+        </button>
+      </div>
+
+      <div class="section-title">
+        <span>医生展示</span>
+      </div>
+      <div class="recommend">
+        <div class="list">
+          <div v-for="(item,index) in yishengList" :key="index" @click="handleCardClick('yisheng', item.id)" class="list-item">
+            <img :src="item.touxiang?baseurl+item.touxiang.split(',')[0]:''" alt="" />
+            <div class="name">{{item.yishengxingming}}</div>
+          </div>
+        </div>
+        <button class="more-btn" @click="handleMoreClick('yisheng')">
+          查看更多 <i class="layui-icon layui-icon-next"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../layui/layui.js"></script>
+  <script src="../../js/swiper.min.js"></script>
+  <script src="../../js/vue.js"></script>
+  <script src="../../js/config.js"></script>
+  <script src="../../modules/config.js"></script>
+  <script src="../../js/utils.js"></script>
+  <script src="../../js/jquery-1.11.3.min.js"></script>
+  <script type="text/javascript">
+    var vue = new Vue({
+      el: '#app',
+      data: {
+        yishengList: [],
+        gonggaoxinxiList: [],
+        swiperList: [],
+        baseurl: ''
+      },
+      methods: {
+        handleCardClick(type, id) {
+          console.log('卡片点击，类型:', type, 'ID:', id);
+          try {
+            // 获取父窗口
+            var parentWindow = window.parent;
+            if (parentWindow) {
+              // 先触发对应的菜单
+              var menu = parentWindow.document.querySelector(`a[href*="${type}"]`);
+              if (menu) {
+                menu.click();
+                // 等待菜单加载完成后跳转到详情页
+                setTimeout(() => {
+                  var iframe = parentWindow.document.getElementById('rightContent');
+                  if (iframe) {
+                    iframe.src = `../${type}/detail.html?id=${id}`;
+                  }
+                }, 100);
+              }
+            }
+          } catch (error) {
+            console.error('跳转出错:', error);
+          }
+        },
+        handleMoreClick(type) {
+          console.log('查看更多点击，类型:', type);
+          try {
+            // 获取父窗口
+            var parentWindow = window.parent;
+            if (parentWindow) {
+              // 根据类型查找对应的菜单
+              var menu = parentWindow.document.querySelector(`a[href*="${type}"]`);
+              if (menu) {
+                menu.click();
+              }
+            }
+          } catch (error) {
+            console.error('跳转出错:', error);
+          }
+        }
+      },
+      mounted() {
+        // 页面加载完成后，设置父窗口的URL变化监听
+        var parentWindow = window.parent;
+        if (parentWindow) {
+          // 在父窗口中添加URL变化监听
+          parentWindow.addEventListener('load', function() {
+            var iframe = document.getElementById('rightContent');
+            if (iframe) {
+              // 监听iframe的load事件
+              iframe.addEventListener('load', function() {
+                var currentUrl = iframe.src;
+                var type = '';
+                if (currentUrl.includes('gonggaoxinxi')) {
+                  type = 'gonggaoxinxi';
+                } else if (currentUrl.includes('yisheng')) {
+                  type = 'yisheng';
+                } else if (currentUrl.includes('home')) {
+                  type = 'home';
+                }
+                
+                if (type) {
+                  // 更新导航栏状态
+                  var navItems = document.querySelectorAll('.navs li');
+                  navItems.forEach(function(item) {
+                    item.classList.remove('current');
+                  });
+                  
+                  var currentNav = document.querySelector(`a[href*="${type}"]`).parentElement;
+                  if (currentNav) {
+                    currentNav.classList.add('current');
+                  }
+                  
+                  // 更新 layui 的导航状态
+                  if (window.layui && window.layui.element) {
+                    window.layui.element.init();
+                  }
+                }
+              });
+            }
+          });
+        }
+      }
+    });
+
+    layui.use(['layer', 'form', 'element', 'carousel', 'http', 'jquery'], function() {
+      var layer = layui.layer;
+      var element = layui.element;
+      var form = layui.form;
+      var carousel = layui.carousel;
+      var http = layui.http;
+      var jquery = layui.jquery;
+      vue.baseurl = http.baseurl;
+
+      http.request('config/list', 'get', {
+        page: 1,
+        limit: 5
+      }, function(res) {
+        if (res.data.list.length > 0) {
+          let swiperList = [];
+          res.data.list.forEach(element => {
+            if (element.value != null) {
+              swiperList.push({
+                img: http.baseurl + element.value
+              });
+            }
+          });
+
+          vue.swiperList = swiperList;
+
+          vue.$nextTick(() => {
+            carousel.render({
+              elem: '#test1',
+              width: '100%',
+              height: '450px',
+              arrow: 'hover',
+              anim: 'updown',
+              autoplay: 'true',
+              interval: '3000',
+              indicator: 'inside'
+            });
+          })
+        }
+      });
+
+      http.request(`yisheng/list`, 'get', {
+        sfsh: '是',
+        page: 1,
+        limit: 6
+      }, function(res) {
+        vue.yishengList = res.data.list;
+      });
+
+      http.request(`gonggaoxinxi/list`, 'get', {
+        page: 1,
+        limit: 6
+      }, function(res) {
+        vue.gonggaoxinxiList = res.data.list;
+      });
+    });
+  </script>
+</body>
+</html>

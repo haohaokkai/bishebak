@@ -1,0 +1,80 @@
+@startuml 诊断相关ER图
+
+' 设置样式
+skinparam backgroundColor white
+skinparam handwritten false
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam class {
+    BackgroundColor white
+    BorderColor black
+    ArrowColor black
+}
+
+' 诊断相关实体
+entity "医生" as doctor {
+    + id : Long <<PK>>
+    --
+    name : String
+    specialty : String
+    title : String
+    department : String
+    introduction : String
+    status : Integer
+    create_time : Date
+    update_time : Date
+}
+
+entity "患者" as patient {
+    + id : Long <<PK>>
+    --
+    name : String
+    age : Integer
+    gender : String
+    phone : String
+    address : String
+    medical_history : String
+    create_time : Date
+    update_time : Date
+}
+
+entity "预约" as appointment {
+    + id : Long <<PK>>
+    --
+    patient_id : Long <<FK>>
+    doctor_id : Long <<FK>>
+    schedule_id : Long <<FK>>
+    appointment_time : Date
+    status : Integer
+    create_time : Date
+    update_time : Date
+}
+
+entity "诊断记录" as diagnosis {
+    + id : Long <<PK>>
+    --
+    patient_id : Long <<FK>>
+    doctor_id : Long <<FK>>
+    appointment_id : Long <<FK>>
+    diagnosis : String
+    prescription : String
+    status : Integer
+    create_time : Date
+    update_time : Date
+}
+
+' 定义关系
+doctor ||--o{ diagnosis
+patient ||--o{ diagnosis
+appointment ||--o{ diagnosis
+
+' 添加注释
+note right of doctor
+  医生可以管理诊断记录
+end note
+
+note right of patient
+  患者可以查看诊断记录
+end note
+
+@enduml 

@@ -1,0 +1,79 @@
+@startuml 咨询管理时序图
+
+' 设置样式
+skinparam backgroundColor white
+skinparam handwritten false
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam sequence {
+    ArrowColor black
+    ParticipantBorderColor black
+    ParticipantBackgroundColor white
+}
+
+' 定义参与者
+actor 患者 as patient
+actor 医生 as doctor
+participant "前端界面" as front
+participant "ConsultationController" as controller
+participant "ConsultationService" as service
+participant "ConsultationDao" as dao
+database "数据库" as db
+
+' 提交咨询流程
+== 提交咨询 ==
+patient -> front: 填写咨询内容
+front -> controller: 提交咨询请求
+controller -> service: createConsultation(consultationInfo)
+service -> dao: save(consultationInfo)
+dao -> db: 插入咨询数据
+db --> dao: 返回结果
+dao --> service: 返回结果
+service --> controller: 返回结果
+controller --> front: 返回提交结果
+front --> patient: 显示提交结果
+
+' 查看咨询列表流程
+== 查看咨询列表 ==
+doctor -> front: 查看待回复咨询
+front -> controller: 获取咨询列表
+controller -> service: getPendingConsultations(doctorId)
+service -> dao: findByDoctorIdAndStatus(doctorId, PENDING)
+dao -> db: 查询咨询数据
+db --> dao: 返回咨询信息
+dao --> service: 返回咨询信息
+service --> controller: 返回咨询信息
+controller --> front: 返回咨询信息
+front --> doctor: 显示咨询列表
+
+' 回复咨询流程
+== 回复咨询 ==
+doctor -> front: 填写回复内容
+front -> controller: 提交回复请求
+controller -> service: replyConsultation(consultationId, reply)
+service -> dao: findById(consultationId)
+dao -> db: 查询咨询数据
+db --> dao: 返回咨询信息
+dao --> service: 返回咨询信息
+service -> dao: updateReply(consultationId, reply)
+dao -> db: 更新咨询数据
+db --> dao: 返回结果
+dao --> service: 返回结果
+service --> controller: 返回结果
+controller --> front: 返回回复结果
+front --> doctor: 显示回复结果
+
+' 查看咨询历史流程
+== 查看咨询历史 ==
+patient -> front: 查看咨询历史
+front -> controller: 获取咨询历史
+controller -> service: getConsultationHistory(patientId)
+service -> dao: findByPatientId(patientId)
+dao -> db: 查询咨询数据
+db --> dao: 返回咨询信息
+dao --> service: 返回咨询信息
+service --> controller: 返回咨询信息
+controller --> front: 返回咨询信息
+front --> patient: 显示咨询历史
+
+@enduml 

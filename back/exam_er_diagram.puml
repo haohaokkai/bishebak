@@ -1,0 +1,75 @@
+@startuml 考试相关ER图
+
+' 设置样式
+skinparam backgroundColor white
+skinparam handwritten false
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam class {
+    BackgroundColor white
+    BorderColor black
+    ArrowColor black
+}
+
+' 考试相关实体
+entity "患者" as patient {
+    + id : Long <<PK>>
+    --
+    name : String
+    age : Integer
+    gender : String
+    phone : String
+    address : String
+    medical_history : String
+    create_time : Date
+    update_time : Date
+}
+
+entity "试卷" as exam_paper {
+    + id : Long <<PK>>
+    --
+    title : String
+    time : Integer
+    status : Integer
+    create_time : Date
+    update_time : Date
+}
+
+entity "试题" as exam_question {
+    + id : Long <<PK>>
+    --
+    paper_id : Long <<FK>>
+    question : String
+    options : String
+    answer : String
+    score : Integer
+    create_time : Date
+    update_time : Date
+}
+
+entity "考试记录" as exam_record {
+    + id : Long <<PK>>
+    --
+    patient_id : Long <<FK>>
+    paper_id : Long <<FK>>
+    score : Integer
+    status : Integer
+    create_time : Date
+    update_time : Date
+}
+
+' 定义关系
+exam_paper ||--o{ exam_question
+exam_paper ||--o{ exam_record
+patient ||--o{ exam_record
+
+' 添加注释
+note right of exam_paper
+  试卷包含多个试题
+end note
+
+note right of patient
+  患者可以参加考试
+end note
+
+@enduml 

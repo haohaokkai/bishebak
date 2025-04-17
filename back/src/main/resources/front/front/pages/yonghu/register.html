@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<title>注册 - 人格障碍诊疗平台</title>
+		<link rel="stylesheet" type="text/css" href="../../layui/css/layui.css">
+	    <link rel="stylesheet" type="text/css" href="../../xznstatic/css/public.css"/>
+	    <link rel="stylesheet" type="text/css" href="../../xznstatic/css/login.css"/>
+	    <style type="text/css">
+			body {
+				margin: 0;
+				padding: 0;
+				background: #f5f5f5;
+				font-family: "Microsoft YaHei", sans-serif;
+			}
+			.register {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				width: 100%;
+				height: 100vh;
+				background: url(/springboot212h6/img/login-bg.jpg) no-repeat center center;
+				background-size: cover;
+				position: relative;
+			}
+			.register::before {
+				content: '';
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				background: rgba(0, 0, 0, 0.3);
+			}
+			.register-form {
+				background: rgba(255, 255, 255, 0.95);
+				padding: 40px !important;
+				border-radius: 8px !important;
+				box-shadow: 0 2px 12px 0 rgba(0,0,0,.1) !important;
+				width: 400px !important;
+				position: relative;
+				z-index: 1;
+			}
+			.title {
+				text-align: center;
+				margin-bottom: 40px;
+				color: #333;
+				font-size: 24px;
+				font-weight: bold;
+			}
+			.form-item {
+				margin-bottom: 30px !important;
+				position: relative;
+				display: flex;
+				align-items: center;
+			}
+			.form-label {
+				color: #666 !important;
+				font-size: 14px !important;
+				width: 80px;
+				text-align: right;
+				padding-right: 15px;
+				flex-shrink: 0;
+			}
+			.layui-input {
+				height: 40px !important;
+				line-height: 40px !important;
+				padding: 0 15px !important;
+				border: 1px solid #dcdfe6 !important;
+				border-radius: 4px !important;
+				transition: border-color .2s;
+				flex: 1;
+				box-sizing: border-box !important;
+			}
+			.layui-input:focus {
+				border-color: #409eff !important;
+				outline: none;
+			}
+			.btn-submit {
+				width: 100% !important;
+				height: 40px !important;
+				line-height: 40px !important;
+				background: #409eff !important;
+				border: none !important;
+				border-radius: 4px !important;
+				color: #fff !important;
+				font-size: 16px !important;
+				cursor: pointer;
+				transition: background .3s;
+				margin-top: 20px !important;
+			}
+			.btn-submit:hover {
+				background: #66b1ff !important;
+			}
+			.txt {
+				text-align: center;
+				margin-top: 25px;
+				font-size: 14px;
+				color: #666;
+			}
+			.txt a {
+				color: #409eff;
+				text-decoration: none;
+			}
+			.txt a:hover {
+				color: #66b1ff;
+			}
+	    </style>
+	</head>
+	<body>
+		<div class="register" id="app">
+			<form class="layui-form register-form">
+				<div class="title">用户注册</div>
+				
+				<div class="form-item">
+					<label class="form-label">用户账号</label>
+					<input type="text" id="yonghuzhanghao" name="yonghuzhanghao" required lay-verify="required" placeholder="请输入用户账号" autocomplete="off" class="layui-input">
+				</div>
+				
+				<div class="form-item">
+					<label class="form-label">用户姓名</label>
+					<input type="text" id="yonghuxingming" name="yonghuxingming" required lay-verify="required" placeholder="请输入用户姓名" autocomplete="off" class="layui-input">
+				</div>
+				
+				<div class="form-item">
+					<label class="form-label">密码</label>
+					<input type="password" name="mima" required lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
+				</div>
+				
+				<div class="form-item">
+					<label class="form-label">确认密码</label>
+					<input type="password" name="mima2" required lay-verify="required" placeholder="请再次输入密码" autocomplete="off" class="layui-input">
+				</div>
+				
+				<div class="form-item">
+					<label class="form-label">手机号</label>
+					<input type="text" id="shoujihao" name="shoujihao" required lay-verify="required|phone" placeholder="请输入手机号" autocomplete="off" class="layui-input">
+				</div>
+				
+				<button class="layui-btn layui-btn-fluid btn-submit" lay-submit lay-filter="register">注册</button>
+				
+				<p class="txt">
+					<a href="../login/login.html">已有账号？立即登录</a>
+				</p>
+			</form>
+		</div>
+
+		<script src="../../layui/layui.js"></script>
+		<script src="../../js/vue.js"></script>
+		<script src="../../js/config.js"></script>
+		<script src="../../modules/config.js"></script>
+		<script src="../../js/utils.js"></script>
+		<script src="../../js/validate.js"></script>
+		<script>
+			var vue = new Vue({
+				el: '#app',
+				data: {
+				},
+				methods: {
+				},
+			});
+			
+			layui.use(['layer', 'element', 'form', 'http', 'jquery'], function() {
+				var layer = layui.layer;
+				var element = layui.element;
+				var form = layui.form;
+				var http = layui.http;
+				var jquery = layui.jquery;
+
+				var tablename = http.getParam('tablename');
+				
+				// 自定义验证规则
+				form.verify({
+					phone: [
+						/^1[3456789]\d{9}$/,
+						'请输入正确的手机号'
+					]
+				});
+				
+				// 注册
+				form.on('submit(register)', function(data) {
+					data = data.field;
+					if(!data.yonghuzhanghao){
+						layer.msg('用户账号不能为空', {
+							time: 2000,
+							icon: 5
+						});
+						return false;
+					}
+					if(!isMobile(data.shoujihao)){
+						layer.msg('手机号应输入手机格式', {
+							time: 2000,
+							icon: 5
+						});
+						return false;
+					}
+
+					if(data.mima!=data.mima2) {
+						layer.msg('两次密码输入不一致', {
+							time: 2000,
+							icon: 5
+						});
+						return false;
+					}
+
+					var url = tablename + '/register';
+					http.requestJson(url, 'post', data, function(res) {
+						layer.msg('注册成功', {
+							time: 2000,
+							icon: 6
+						}, function(){
+							window.location.href = '../login/login.html';
+						});
+					});
+					return false;
+				});
+			});
+		</script>
+	</body>
+</html>

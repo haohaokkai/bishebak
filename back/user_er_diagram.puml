@@ -1,0 +1,61 @@
+@startuml 用户相关ER图
+
+' 设置样式
+skinparam backgroundColor white
+skinparam handwritten false
+skinparam defaultFontName Microsoft YaHei
+skinparam defaultFontSize 14
+skinparam class {
+    BackgroundColor white
+    BorderColor black
+    ArrowColor black
+}
+
+' 用户相关实体
+entity "用户" as user {
+    + id : Long <<PK>>
+    --
+    username : String
+    password : String
+    role : String
+    create_time : Date
+    update_time : Date
+}
+
+entity "医生" as doctor {
+    + id : Long <<PK>>
+    --
+    name : String
+    specialty : String
+    title : String
+    department : String
+    introduction : String
+    status : Integer
+    create_time : Date
+    update_time : Date
+}
+
+entity "患者" as patient {
+    + id : Long <<PK>>
+    --
+    name : String
+    age : Integer
+    gender : String
+    phone : String
+    address : String
+    medical_history : String
+    create_time : Date
+    update_time : Date
+}
+
+' 定义关系
+user ||--o{ doctor
+user ||--o{ patient
+
+' 添加注释
+note right of user
+  用户是系统的基类，
+  医生和患者都继承自用户
+end note
+
+@enduml 
